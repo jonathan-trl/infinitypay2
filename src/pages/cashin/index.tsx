@@ -17,25 +17,27 @@ import {
   Center,
 } from '@chakra-ui/react'
 import { Info } from '@phosphor-icons/react'
+
 function CashIn() {
   return (
     <Box flex={1}>
       <Text
-        fontSize={30}
-        fontWeight={'bold'}
-        color={'black'}
-        mx={52}
-        mb={'12'}
+        fontSize={{ base: 20, md: 30 }}
+        fontWeight="bold"
+        color="black"
+        mx={{ base: 2, md: 52 }}
+        mb={12}
         mt={4}
       >
         Cash In
       </Text>
-      <HStack>
+
+      <HStack spacing={4}>
         <Input placeholder="Pesquisar" />
         <ButtonSearch />
       </HStack>
 
-      <TableContainer ml={52}>
+      <TableContainer mx={{ base: 2, md: 52 }}>
         <Table size="lg">
           <Thead>
             <Tr>
