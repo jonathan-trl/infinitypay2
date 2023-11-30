@@ -1,3 +1,4 @@
+import React from 'react'
 import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { Input } from '@/src/components/Input'
 import { AffiliatesData } from '@/src/data/AffiliatesData'
@@ -12,31 +13,29 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Button as NativeButton,
-  Center,
 } from '@chakra-ui/react'
+
 function Affiliates() {
   return (
-    <Box flex={1}>
+    <Box flex={1} p={{ base: 4, md: 8 }}>
       <Text
-        fontSize={30}
-        fontWeight={'bold'}
-        color={'black'}
-        mx={52}
-        mb={'12'}
+        fontSize={{ base: 24, md: 30 }}
+        fontWeight="bold"
+        color="black"
+        mb={4}
         mt={4}
       >
         Afiliados
       </Text>
-      <HStack>
+      <HStack mb={4}>
         <Input placeholder="Pesquisar Email" />
         <ButtonSearch />
       </HStack>
 
-      <TableContainer ml={52}>
-        <Table size="lg">
+      <TableContainer>
+        <Table size={{ base: 'sm', md: 'lg' }}>
           <Thead>
             <Tr>
               <Th>EMAIL</Th>
@@ -51,16 +50,20 @@ function Affiliates() {
           <Tbody>
             {AffiliatesData.map((info, index) => (
               <Tr key={index}>
-                <Td fontWeight={'bold'}>{info.email}</Td>
-                <Td fontWeight={'bold'}>{info.moviment}</Td>
-                <Td fontWeight={'bold'}>{info.cashin}</Td>
-                <Td fontWeight={'bold'}>{info.cashout}</Td>
-
-                <Td fontWeight={'bold'}>{info.totalRate}</Td>
-                <Td fontWeight={'bold'}>{info.porcentage}</Td>
+                <Td fontWeight="bold">{info.email}</Td>
+                <Td fontWeight="bold">{info.moviment}</Td>
+                <Td fontWeight="bold">{info.cashin}</Td>
+                <Td fontWeight="bold">{info.cashout}</Td>
+                <Td fontWeight="bold">{info.totalRate}</Td>
+                <Td fontWeight="bold">{info.porcentage}</Td>
                 <Td>
-                  <NativeButton bg={'black'} w={'28'} h={'8'} rounded={0}>
-                    <Text color={'white'}>Ver Extrato</Text>
+                  <NativeButton
+                    bg="black"
+                    w={{ base: '28', md: '40' }}
+                    h="8"
+                    rounded={0}
+                  >
+                    <Text color="white">Ver Extrato</Text>
                   </NativeButton>
                 </Td>
               </Tr>

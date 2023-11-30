@@ -1,3 +1,4 @@
+import React from 'react'
 import { Input } from '@/src/components/Input'
 import { CashOutData } from '../../data/CashOutData'
 import {
@@ -10,32 +11,29 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
-  Button as NativeButton,
-  Center,
 } from '@chakra-ui/react'
 import { Info } from '@phosphor-icons/react'
 import { ButtonSearch } from '@/src/components/ButtonSearch'
+
 function CashOut() {
   return (
-    <Box flex={1}>
+    <Box flex={1} p={{ base: 4, md: 8 }}>
       <Text
-        fontSize={30}
-        fontWeight={'bold'}
-        color={'black'}
-        mx={52}
-        mb={'12'}
+        fontSize={{ base: 24, md: 30 }}
+        fontWeight="bold"
+        color="black"
+        mb={4}
         mt={4}
       >
-        Cash In
+        Cash Out
       </Text>
-      <HStack>
+      <HStack mb={4}>
         <Input placeholder="Pesquisar" />
         <ButtonSearch />
       </HStack>
 
-      <TableContainer ml={52}>
+      <TableContainer>
         <Table size="lg">
           <Thead>
             <Tr>
@@ -51,14 +49,13 @@ function CashOut() {
           <Tbody>
             {CashOutData.map((info, index) => (
               <Tr key={index}>
-                <Td fontWeight={'bold'}>{info.user}</Td>
-                <Td fontWeight={'bold'}>{info.date}</Td>
-                <Td fontWeight={'bold'}>{info.type}</Td>
-                <Td fontWeight={'bold'}>{info.status}</Td>
-
-                <Td fontWeight={'bold'}>{info.total}</Td>
-                <Td fontWeight={'bold'}>{info.liquid}</Td>
-                <Td fontWeight={'bold'}>
+                <Td fontWeight="bold">{info.user}</Td>
+                <Td fontWeight="bold">{info.date}</Td>
+                <Td fontWeight="bold">{info.type}</Td>
+                <Td fontWeight="bold">{info.status}</Td>
+                <Td fontWeight="bold">{info.total}</Td>
+                <Td fontWeight="bold">{info.liquid}</Td>
+                <Td fontWeight="bold">
                   <Info color="black" size={20} />
                 </Td>
               </Tr>

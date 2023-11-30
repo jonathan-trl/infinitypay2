@@ -1,13 +1,21 @@
 import React from 'react'
-import { Box } from '@chakra-ui/react'
+import {
+  Box,
+  HStack,
+  VStack,
+  useDisclosure,
+  IconButton,
+} from '@chakra-ui/react'
 import { NavbarList } from './NavBarList'
 import Image from 'next/image'
 import Logo from '../../assets/images/Logo.png'
+import { FaBars, FaArrowLeft } from 'react-icons/fa'
 interface List {
   title: string
   href: string
 }
 export const NavBar = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const Create = () => ({
     icon(solid: JSX.Element, rounded: JSX.Element) {
       return {
@@ -66,14 +74,14 @@ export const NavBar = () => {
     <Box
       position="fixed"
       top="0"
-      w="48"
+      left="0"
+      w={{ base: '100%', md: isOpen ? '12rem' : '0rem' }}
       h="full"
       bg="black"
       borderRight="1px"
       borderColor="gray.300"
-      transition="all"
-      transitionDuration="300ms"
-      transitionTimingFunction="ease-in-out"
+      zIndex="1"
+      transition="width 0.3s"
     >
       <Image
         alt="Logo"
@@ -81,9 +89,53 @@ export const NavBar = () => {
         width={80}
         style={{ marginInline: 15, marginTop: 10 }}
       />
-      <nav>
-        <NavbarList list={list} />
-      </nav>
+      {isOpen ? (
+        <VStack spacing="4" align="flex-start">
+          {list.map((item) => (
+            <Box
+              key={item.href}
+              cursor="pointer"
+              _hover={{ color: 'blue.500' }}
+            >
+              <NavbarList list={[item]} />
+            </Box>
+          ))}
+        </VStack>
+      ) : (
+        <HStack
+          display="flex"
+          position="fixed"
+          top="0"
+          right="4"
+          p="4"
+          color="white"
+        >
+          <IconButton
+            icon={<FaBars />}
+            aria-label="Open menu"
+            onClick={onOpen}
+            variant="ghost"
+          />
+        </HStack>
+      )}
+      {/* Botão para recolher o menu lateral em telas maiores */}
+      {isOpen && (
+        <HStack
+          display={{ base: 'none', md: 'flex' }}
+          position="fixed"
+          top="0"
+          right="4"
+          p="4"
+          color="white"
+        >
+          <IconButton
+            icon={<FaArrowLeft />}
+            aria-label="Close menu"
+            onClick={onClose}
+            variant="ghost"
+          />
+        </HStack>
+      )}
     </Box>
   )
 }
