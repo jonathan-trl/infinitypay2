@@ -34,14 +34,14 @@ function Acounts() {
         Todas as Contas
       </Text>
 
-      <HStack>
-        <Input placeholder="Pesquisar Nome" w={'56'} />
+      <HStack spacing={4}>
+        <Input placeholder="Pesquisar Nome" />
         <ButtonSearch />
-        <Button title="Nova Conta" px={20} />
+        <Button title="Nova Conta" />
       </HStack>
 
       <HStack spacing={4}>
-        <Input placeholder="Pesquisar CPF" w={'56'} />
+        <Input placeholder="Pesquisar CPF" />
         <ButtonSearch />
       </HStack>
 
