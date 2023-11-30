@@ -38,4 +38,40 @@ export const ExemptionData = [
     totalWithdraw: '1/2',
     status: 'concluded',
   },
+  {
+    date: '20 / 12 / 2020',
+    name: 'GERALDO CARLOS OLIVEIRA DE SOUZA',
+
+    login: 'infinitybank@gmail.com',
+    document: '3939383933',
+    totalWithdraw: '1/2',
+    status: 'concluded',
+  },
+  {
+    date: '20 / 12 / 2020',
+    name: 'GERALDO CARLOS OLIVEIRA DE SOUZA',
+
+    login: 'infinitybank@gmail.com',
+    document: '3939383933',
+    totalWithdraw: '1/2',
+    status: 'concluded',
+  },
+  {
+    date: '20 / 12 / 2020',
+    name: 'GERALDO CARLOS OLIVEIRA DE SOUZA',
+
+    login: 'infinitybank@gmail.com',
+    document: '3939383933',
+    totalWithdraw: '1/2',
+    status: 'concluded',
+  },
+  {
+    date: '20 / 12 / 2020',
+    name: 'GERALDO CARLOS OLIVEIRA DE SOUZA',
+
+    login: 'infinitybank@gmail.com',
+    document: '3939383933',
+    totalWithdraw: '1/2',
+    status: 'concluded',
+  },
 ]
