@@ -81,21 +81,12 @@ export const NavBar = () => {
       zIndex="1"
       transition="width 0.3s"
     >
-      <HStack>
-        <Image
-          alt="Logo"
-          src={Logo}
-          width={80}
-          style={{ marginInline: 15, marginTop: 10 }}
-        />
-        <IconButton
-          icon={<FaArrowLeft />}
-          aria-label="Close menu"
-          onClick={onClose}
-          variant="white"
-          color={'white'}
-        />
-      </HStack>
+      <Image
+        alt="Logo"
+        src={Logo}
+        width={80}
+        style={{ marginInline: 15, marginTop: 10 }}
+      />
 
       {isOpen ? (
         <VStack spacing="4" align="flex-start">
@@ -122,6 +113,7 @@ export const NavBar = () => {
               aria-label="Close menu"
               onClick={onClose}
               variant="ghost"
+              color={'#1ce686'}
             />
           </HStack>
         </VStack>
@@ -139,6 +131,7 @@ export const NavBar = () => {
             aria-label="Open menu"
             onClick={onOpen}
             variant="ghost"
+            color={'black'}
           />
         </HStack>
       )}
@@ -157,6 +150,7 @@ export const NavBar = () => {
             aria-label="Close menu"
             onClick={onClose}
             variant="ghost"
+            color={'black'}
           />
         </HStack>
       )}

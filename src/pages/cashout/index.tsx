@@ -20,10 +20,11 @@ function CashOut() {
   return (
     <Box flex={1} p={{ base: 4, md: 8 }}>
       <Text
-        fontSize={{ base: 24, md: 30 }}
+        fontSize={{ base: 20, md: 30 }}
         fontWeight="bold"
         color="black"
-        mb={4}
+        mx={{ base: 2, md: 52 }}
+        mb={12}
         mt={4}
       >
         Cash Out
@@ -33,7 +34,7 @@ function CashOut() {
         <ButtonSearch />
       </HStack>
 
-      <TableContainer>
+      <TableContainer mx={{ base: 2, md: 52 }}>
         <Table size="lg">
           <Thead>
             <Tr>
