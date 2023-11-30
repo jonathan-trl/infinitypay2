@@ -75,20 +75,28 @@ export const NavBar = () => {
       position="fixed"
       top="0"
       left="0"
-      w={{ base: '100%', md: isOpen ? '12rem' : '0rem' }}
+      w={{ base: isOpen ? '100%' : '0rem', md: isOpen ? '12rem' : '0rem' }}
       h="full"
       bg="black"
-      borderRight="1px"
-      borderColor="gray.300"
       zIndex="1"
       transition="width 0.3s"
     >
-      <Image
-        alt="Logo"
-        src={Logo}
-        width={80}
-        style={{ marginInline: 15, marginTop: 10 }}
-      />
+      <HStack>
+        <Image
+          alt="Logo"
+          src={Logo}
+          width={80}
+          style={{ marginInline: 15, marginTop: 10 }}
+        />
+        <IconButton
+          icon={<FaArrowLeft />}
+          aria-label="Close menu"
+          onClick={onClose}
+          variant="white"
+          color={'white'}
+        />
+      </HStack>
+
       {isOpen ? (
         <VStack spacing="4" align="flex-start">
           {list.map((item) => (
@@ -100,6 +108,22 @@ export const NavBar = () => {
               <NavbarList list={[item]} />
             </Box>
           ))}
+          {/* Botão para fechar o menu lateral em telas menores */}
+          <HStack
+            display={{ base: 'flex', md: 'none' }}
+            position="fixed"
+            top="0"
+            right="4"
+            p="4"
+            color="white"
+          >
+            <IconButton
+              icon={<FaArrowLeft />}
+              aria-label="Close menu"
+              onClick={onClose}
+              variant="ghost"
+            />
+          </HStack>
         </VStack>
       ) : (
         <HStack
