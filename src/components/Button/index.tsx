@@ -6,10 +6,11 @@ export function Button({ title, ...rest }: Props) {
   return (
     <>
       <ChakraButton
-        w={'64'}
+        w={'fit-content'}
         bg={'#1ce686'}
         borderColor={'black'}
         borderWidth={1}
+        px={10}
         {...rest}
       >
         <Text color={'black'}>{title}</Text>
