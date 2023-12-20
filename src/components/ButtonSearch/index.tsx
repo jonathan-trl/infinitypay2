@@ -4,7 +4,7 @@ type Props = ButtonProps
 
 export function ButtonSearch({ ...rest }: Props) {
   return (
-    <Button {...rest} bg={'black'}>
+    <Button bg={'black'} {...rest}>
       <MagnifyingGlass size={32} color="white" />
     </Button>
   )

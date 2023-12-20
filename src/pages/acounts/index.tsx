@@ -17,10 +17,43 @@ import {
   TableContainer,
   Button as NativeButton,
   Center,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+  Portal,
+  Spinner,
 } from '@chakra-ui/react'
-import { ArrowsClockwise, Plus } from '@phosphor-icons/react'
+import { ArrowsClockwise, CheckCircle, Plus } from '@phosphor-icons/react'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 function Acounts() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [paymentCompleted, setPaymentCompleted] = useState(false)
+  const [amount, setAmount] = useState('')
+
+  const handleButtonClick = async () => {
+    setLoading(true)
+
+    // Simula um processo de pagamento (substitua por sua lógica real)
+    await new Promise((resolve) => setTimeout(resolve, 3000))
+
+    setLoading(false)
+    setPaymentCompleted(true)
+
+    // Reseta o estado após 3 segundos (opcional)
+    setTimeout(() => {
+      setPaymentCompleted(false)
+    }, 3000)
+  }
+
   return (
     <Box flex={1}>
       <Text
@@ -34,13 +67,16 @@ function Acounts() {
         Todas as Contas
       </Text>
 
-      <HStack spacing={4}>
+      <HStack spacing={4} ml={52}>
         <Input placeholder="Pesquisar Nome" />
         <ButtonSearch />
-        <Button title="Nova Conta" />
+        <Button
+          title="Nova Conta"
+          onClick={() => router.push('/acounts/newacounts')}
+        />
       </HStack>
 
-      <HStack spacing={4}>
+      <HStack spacing={4} ml={52}>
         <Input placeholder="Pesquisar CPF" />
         <ButtonSearch />
       </HStack>
@@ -69,7 +105,78 @@ function Acounts() {
 
                 <Td fontWeight={'bold'}>{info.status}</Td>
                 <Td fontWeight={'bold'}>
-                  <ButtonAccount />
+                  <Popover>
+                    <PopoverTrigger>
+                      <ButtonAccount />
+                    </PopoverTrigger>
+                    <Portal>
+                      <PopoverContent
+                        w={96}
+                        h={64}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                      >
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        <PopoverBody>
+                          <Text textAlign={'center'}>Saldo: R$8,999,89</Text>
+                          <Text
+                            textAlign={'center'}
+                            fontWeight="bold"
+                            color="black"
+                          >
+                            Enviando para BRUNA SOUZA DE BRITO
+                          </Text>
+                          <Text
+                            fontWeight="bold"
+                            color="black"
+                            textAlign={'center'}
+                          >
+                            CPF 8392883928
+                          </Text>
+                          {loading ? (
+                            <Center>
+                              <Spinner
+                                thickness="4px"
+                                speed="0.65s"
+                                emptyColor="gray.200"
+                                color="black"
+                                size="xl"
+                              />
+                            </Center>
+                          ) : paymentCompleted ? (
+                            <Center>
+                              <CheckCircle size={100} color="green" />
+                            </Center>
+                          ) : (
+                            <HStack>
+                              <Text
+                                fontWeight="bold"
+                                color="black"
+                                textAlign={'center'}
+                              >
+                                R$
+                              </Text>
+                              <Input
+                                placeholder="50.000,00"
+                                color="black"
+                                w={'52'}
+                                h="10"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                              />
+                              <Button
+                                title="Concluir"
+                                w="16"
+                                onClick={handleButtonClick}
+                                isDisabled={loading || paymentCompleted}
+                              />
+                            </HStack>
+                          )}
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Portal>
+                  </Popover>
                 </Td>
                 <Td fontWeight={'bold'}>
                   <HStack>

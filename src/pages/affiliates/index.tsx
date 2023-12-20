@@ -30,7 +30,7 @@ function Affiliates() {
       >
         Afiliados
       </Text>
-      <HStack mb={4}>
+      <HStack mb={4} ml={52} alignItems={'center'}>
         <Input placeholder="Pesquisar Email" />
         <ButtonSearch />
       </HStack>

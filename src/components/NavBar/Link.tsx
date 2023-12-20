@@ -27,7 +27,7 @@ const NavLinkStyle: ChakraComponent<
     bg: 'black',
     px: '10',
     py: '4',
-    fontFamily: 'Rubik',
+    fontFamily: 'Poppins',
     fontWeight: 'bold',
 
     color: 'white',

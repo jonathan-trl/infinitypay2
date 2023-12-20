@@ -29,7 +29,7 @@ function Exemption() {
       >
         Todos os Pedidos de Isenção
       </Text>
-      <HStack mb={4}>
+      <HStack mb={4} ml={52}>
         <Input placeholder="Pesquisar" />
         <ButtonSearch />
       </HStack>

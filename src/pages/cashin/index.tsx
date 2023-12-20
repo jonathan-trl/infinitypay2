@@ -32,7 +32,7 @@ function CashIn() {
         Cash In
       </Text>
 
-      <HStack spacing={4}>
+      <HStack spacing={4} ml={52}>
         <Input placeholder="Pesquisar" />
         <ButtonSearch />
       </HStack>
