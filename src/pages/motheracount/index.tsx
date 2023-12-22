@@ -50,11 +50,20 @@ function MotherAcount() {
   const handleCopyClick = () => {
     const inputElement = document.getElementById('depositKeyInput')
 
-    if (inputElement) {
+    if (inputElement instanceof HTMLInputElement) {
       inputElement.select()
-      document.execCommand('copy')
+      const inputValue = inputElement.value
+
+      try {
+        navigator.clipboard.writeText(inputValue).then(() => {
+          console.log('Texto copiado para a área de transferência:', inputValue)
+        })
+      } catch (err) {
+        console.error('Erro ao copiar para a área de transferência:', err)
+      }
     }
   }
+
   const handleButtonClick = async () => {
     setLoading2(true)
 
