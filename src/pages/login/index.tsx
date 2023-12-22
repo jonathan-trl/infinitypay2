@@ -25,8 +25,9 @@ import Password from '@/src/assets/images/Password-Icon.svg'
 import Logo from '@/src/assets/images/Logo.png'
 import Image from 'next/image'
 import { EnvelopeSimple } from '@phosphor-icons/react'
-
+import { useAuth } from '@/src/context/authContext'
 function Login() {
+  const { login } = useAuth()
   const router = useRouter()
 
   return (
@@ -65,7 +66,7 @@ function Login() {
           </VStack>
 
           <VStack>
-            <ButtonLogin Title="ENTRAR" />
+            <ButtonLogin Title="ENTRAR" bg={'green'} onClick={login} />
             <Text fontFamily={'Poppins'} color={'#6D6D6D'} fontSize={13}>
               Não possui uma conta?
             </Text>

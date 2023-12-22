@@ -10,12 +10,14 @@ import { NavbarList } from './NavBarList'
 import Image from 'next/image'
 import Logo from '../../assets/images/Logo.png'
 import { FaBars, FaArrowLeft } from 'react-icons/fa'
+import { useAuth } from '@/src/context/authContext'
 interface List {
   title: string
   href: string
 }
-export const NavBar = () => {
+const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { userAuthenticated } = useAuth()
   const Create = () => ({
     icon(solid: JSX.Element, rounded: JSX.Element) {
       return {
@@ -88,7 +90,7 @@ export const NavBar = () => {
         style={{ marginInline: 15, marginTop: 10 }}
       />
 
-      {isOpen ? (
+      {userAuthenticated && isOpen ? (
         <VStack spacing="4" align="flex-start">
           {list.map((item) => (
             <Box
@@ -118,22 +120,25 @@ export const NavBar = () => {
           </HStack>
         </VStack>
       ) : (
-        <HStack
-          display="flex"
-          position="fixed"
-          top="0"
-          right="4"
-          p="4"
-          color="white"
-        >
-          <IconButton
-            icon={<FaBars />}
-            aria-label="Open menu"
-            onClick={onOpen}
-            variant="ghost"
-            color={'black'}
-          />
-        </HStack>
+        userAuthenticated && (
+          <HStack
+            display="flex"
+            position="fixed"
+            top="0"
+            right="4"
+            p="4"
+            color="white"
+          >
+            <IconButton
+              icon={<FaBars />}
+              aria-label="Open menu"
+              onClick={onOpen}
+              variant="ghost"
+              color={'black'}
+              mt={8}
+            />
+          </HStack>
+        )
       )}
       {/* Botão para recolher o menu lateral em telas maiores */}
       {isOpen && (
@@ -151,9 +156,11 @@ export const NavBar = () => {
             onClick={onClose}
             variant="ghost"
             color={'black'}
+            mt={8}
           />
         </HStack>
       )}
     </Box>
   )
 }
+export default NavBar
