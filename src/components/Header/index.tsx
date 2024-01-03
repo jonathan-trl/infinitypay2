@@ -31,14 +31,29 @@ const Header = () => {
   return (
     <>
       {userAuthenticated && (
-        <Box bg="black" w="full" h={12} p={4} color="white">
-          <HStack justifyContent={'space-between'}>
-            <Center ml={64}>
-              <HStack mx={8}>
-                <Text fontWeight="bold">Saldo R$ 8.503,87</Text>
+        <Box
+          bg="black"
+          w="full"
+          h={{ base: 'auto', md: 12 }}
+          p={4}
+          color="white"
+        >
+          <HStack
+            justifyContent={{ base: 'space-around', md: 'space-between' }}
+          >
+            <Center>
+              <HStack>
+                <Text
+                  fontWeight="bold"
+                  textAlign={{ base: 'center', md: 'left' }}
+                >
+                  Saldo R$ 8.503,87
+                </Text>
                 <ArrowsClockwise color="white" size={16} />
               </HStack>
+            </Center>
 
+            <Center>
               <Text
                 color={'white'}
                 textDecorationLine={'underline'}
@@ -49,7 +64,7 @@ const Header = () => {
               </Text>
             </Center>
 
-            <Box>
+            <Center>
               <HStack>
                 <Menu>
                   <MenuButton>Administrador@gmail.com</MenuButton>
@@ -70,7 +85,7 @@ const Header = () => {
                 </Menu>
                 <User color="white" size={16} />
               </HStack>
-            </Box>
+            </Center>
           </HStack>
         </Box>
       )}
