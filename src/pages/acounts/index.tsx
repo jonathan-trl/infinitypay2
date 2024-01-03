@@ -42,13 +42,11 @@ function Acounts() {
   const handleButtonClick = async () => {
     setLoading(true)
 
-    // Simula um processo de pagamento (substitua por sua lógica real)
     await new Promise((resolve) => setTimeout(resolve, 3000))
 
     setLoading(false)
     setPaymentCompleted(true)
 
-    // Reseta o estado após 3 segundos (opcional)
     setTimeout(() => {
       setPaymentCompleted(false)
     }, 3000)
@@ -81,7 +79,7 @@ function Acounts() {
         <ButtonSearch />
       </HStack>
 
-      <TableContainer mx={{ base: 2, md: 52 }}>
+      <TableContainer ml={{ base: 2, md: 52 }}>
         <Table size="lg">
           <Thead>
             <Tr>

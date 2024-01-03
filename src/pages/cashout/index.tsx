@@ -34,7 +34,7 @@ function CashOut() {
         <ButtonSearch />
       </HStack>
 
-      <TableContainer mx={{ base: 2, md: 52 }}>
+      <TableContainer ml={{ base: 2, md: 52 }}>
         <Table size="lg">
           <Thead>
             <Tr>

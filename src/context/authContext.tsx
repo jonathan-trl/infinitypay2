@@ -1,23 +1,20 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react'
 
-// Defina a interface para o estado
 interface State {
   userAuthenticated: boolean
 }
 
-// Defina a interface para as ações
 interface Actions {
   login: () => void
   logout: () => void
 }
 
-// Combine as interfaces em uma única interface para o contexto
 interface AuthContext extends State, Actions {}
 
 const AuthContext = createContext<AuthContext | undefined>(undefined)
 
 interface AuthProviderProps {
-  children: ReactNode // Use ReactNode para tipar children
+  children: ReactNode
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
