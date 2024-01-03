@@ -65,7 +65,7 @@ function Acounts() {
         Todas as Contas
       </Text>
 
-      <HStack spacing={4} ml={52}>
+      <HStack spacing={4} ml={{ base: 2, md: 52 }}>
         <Input placeholder="Pesquisar Nome" />
         <ButtonSearch />
         <Button
@@ -78,9 +78,8 @@ function Acounts() {
         <Input placeholder="Pesquisar CPF" />
         <ButtonSearch />
       </HStack>
-
       <TableContainer ml={{ base: 2, md: 52 }}>
-        <Table size="lg">
+        <Table size={{ base: 'sm', md: 'lg' }}>
           <Thead>
             <Tr>
               <Th>DATA</Th>
