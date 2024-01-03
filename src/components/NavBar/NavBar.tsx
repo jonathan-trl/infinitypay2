@@ -116,6 +116,7 @@ const NavBar = () => {
               onClick={onClose}
               variant="ghost"
               color={'#1ce686'}
+              mt={isOpen ? 8 : 0}
             />
           </HStack>
         </VStack>
@@ -135,7 +136,7 @@ const NavBar = () => {
               onClick={onOpen}
               variant="ghost"
               color={'black'}
-              mt={8}
+              mt={12}
             />
           </HStack>
         )
@@ -156,7 +157,7 @@ const NavBar = () => {
             onClick={onClose}
             variant="ghost"
             color={'black'}
-            mt={8}
+            mt={isOpen ? 8 : 0}
           />
         </HStack>
       )}
