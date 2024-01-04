@@ -1,34 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Button } from '@/src/components/Button'
-import { Input } from '@/src/components/Input'
-import { CashOutData } from '@/src/data/CashOutData'
-import {
-  Box,
-  HStack,
-  Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Button as NativeButton,
-  Center,
-  VStack,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
-  Portal,
-  Spinner,
-} from '@chakra-ui/react'
+import React from 'react'
+import { Box, Text, VStack, Stack } from '@chakra-ui/react'
 import {
   ArrowsClockwise,
   Plus,
@@ -50,9 +21,13 @@ function DashBoard() {
       >
         Dashboard
       </Text>
-      <VStack>
-        <HStack>
-          <Box bg={'black'} h={52} w={72} mx={2} my={2}>
+      <VStack spacing={4} align="stretch">
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
+          spacing={4}
+          align="stretch"
+        >
+          <Box bg={'black'} h={52} mx={2} my={2} flex={1}>
             <Text
               fontSize={22}
               my={5}
@@ -76,7 +51,7 @@ function DashBoard() {
             </Text>
           </Box>
 
-          <Box bg={'black'} h={52} w={72} mx={2} my={2}>
+          <Box bg={'black'} h={52} mx={2} my={2} flex={1}>
             <Text
               fontSize={22}
               mt={5}
@@ -87,7 +62,7 @@ function DashBoard() {
               Novas Contas
             </Text>
             <Text fontSize={18} mx={4} fontWeight={'bold'} color={'white'}>
-              (ultimos 30 dias)
+              (últimos 30 dias)
             </Text>
             <Text
               mt={12}
@@ -100,7 +75,7 @@ function DashBoard() {
             </Text>
           </Box>
 
-          <Box bg={'black'} h={52} w={72} mx={2} my={2}>
+          <Box bg={'black'} h={52} mx={2} my={2} flex={1}>
             <Text
               fontSize={22}
               mt={5}
@@ -121,9 +96,14 @@ function DashBoard() {
               R$ 3.723.746,73
             </Text>
           </Box>
-        </HStack>
-        <HStack>
-          <Box bg={'black'} h={52} w={72} mx={2} my={2}>
+        </Stack>
+
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
+          spacing={4}
+          align="stretch"
+        >
+          <Box bg={'black'} h={52} mx={2} my={2} flex={1}>
             <Text
               fontSize={22}
               mt={5}
@@ -147,7 +127,7 @@ function DashBoard() {
             </Text>
           </Box>
 
-          <Box bg={'black'} h={52} w={72} mx={2} my={2}>
+          <Box bg={'black'} h={52} mx={2} my={2} flex={1}>
             <Text
               fontSize={22}
               mt={5}
@@ -158,7 +138,7 @@ function DashBoard() {
               Consultas CPF
             </Text>
             <Text fontSize={18} mx={4} fontWeight={'bold'} color={'white'}>
-              (ultimos 30 dias)
+              (últimos 30 dias)
             </Text>
             <Text
               mt={12}
@@ -170,7 +150,8 @@ function DashBoard() {
               1039
             </Text>
           </Box>
-          <Box bg={'black'} h={52} w={72} mx={2} my={2}>
+
+          <Box bg={'black'} h={52} mx={2} my={2} flex={1}>
             <Text
               fontSize={22}
               mt={5}
@@ -191,7 +172,7 @@ function DashBoard() {
               R$ 3.323.446,98
             </Text>
           </Box>
-        </HStack>
+        </Stack>
       </VStack>
     </Box>
   )

@@ -104,46 +104,22 @@ function MotherAcount() {
     }
   }, [paymentCompleted])
   return (
-    <Box>
-      <HStack justifyContent={'space-between'}>
-        <Text
-          fontSize={{ base: 20, md: 30 }}
-          fontWeight="bold"
-          color="black"
-          mx={{ base: 2, md: 52 }}
-          mb={12}
-          mt={4}
-        >
+    <VStack p={4} align="stretch" ml={{ base: 0, md: 52 }}>
+      <HStack justifyContent="space-between" w="100%">
+        <Text fontSize={{ base: 20, md: 30 }} fontWeight="bold" color="black">
           Configuração de usuário
         </Text>
-        <Button title="Solicitar Isenção" w="32" mt={10} mx={6} />
+        <Button title="Solicitar Isenção" w={{ base: 'full', md: '32' }} />
       </HStack>
 
-      <HStack ml={52}>
-        <VStack>
-          <Input
-            title="Nº da conta"
-            placeholder="300203902839"
-            color="black"
-            w={{ base: 'full', md: '96' }}
-            h="12"
-          />
-
-          <Input
-            title="Informações"
-            placeholder="JACKSON VARGES SOUZA"
-            color="black"
-            w={{ base: 'full', md: '96' }}
-            h="12"
-          />
-          <Input
-            title="CPF*"
-            placeholder="83974937902"
-            w={{ base: 'full', md: '96' }}
-            h="12"
-          />
+      <HStack spacing={4} w="100%">
+        <VStack align="start" spacing={4} w={{ base: 'full', md: '50%' }}>
+          <Input title="Nº da conta" placeholder="300203902839" h="12" />
+          <Input title="Informações" placeholder="JACKSON VARGES" h="12" />
+          <Input title="CPF*" placeholder="83974937902" h="12" />
         </VStack>
-        <VStack align="start" spacing={4} mx={{ base: 2, md: 28 }}>
+
+        <VStack align="start" spacing={4} w={{ base: 'full', md: '50%' }}>
           <Text fontWeight="bold" color="black" fontSize={19}>
             Saldo R$ 10.018,57
           </Text>
@@ -159,11 +135,11 @@ function MotherAcount() {
         </VStack>
       </HStack>
 
-      <VStack align="start" spacing={4} mx={{ base: 2, md: 52 }}>
+      <VStack align="start" spacing={4} w="100%">
         <Text fontWeight="bold" color="black" fontSize={19}>
           Situação
         </Text>
-        <HStack>
+        <HStack spacing={4}>
           {active ? (
             <HStack>
               <Text color="#17c972" m={10} fontWeight="bold">
@@ -186,8 +162,8 @@ function MotherAcount() {
                 </PopoverTrigger>
                 <Portal>
                   <PopoverContent
-                    w={96}
-                    h={80}
+                    w={{ base: 'full', md: '96' }}
+                    h={{ base: '240', md: '80' }}
                     justifyContent={'center'}
                     alignItems={'center'}
                   >
@@ -248,14 +224,14 @@ function MotherAcount() {
                           <Input
                             placeholder="50.000,00"
                             color="black"
-                            w={'72'}
+                            w={{ base: 'full', md: '72' }}
                             h="10"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                           />
                           <Button
                             title="ATIVAR COM SALDO DA CONTA MÃE"
-                            w="72"
+                            w={{ base: 'full', md: '72' }}
                             onClick={handleActivate}
                             isLoading={loading}
                             loadingText="Aguarde..."
@@ -289,102 +265,99 @@ function MotherAcount() {
         </HStack>
       </VStack>
 
-      <Text
-        fontWeight="bold"
-        color="black"
-        fontSize={19}
-        mx={{ base: 2, md: 52 }}
-      >
+      <Text fontWeight="bold" color="black" fontSize={19} w="100%">
         DEPÓSITOS
       </Text>
-      <HStack ml={80}>
+      <HStack spacing={{ base: 2, md: 4 }} w="100%">
         <Input
           id="depositKeyInput"
           title="Chave para depósito na conta"
           placeholder="c4ac9e67-87c-76b"
-          color="black"
-          w={{ base: 'full', md: '96' }}
           h="12"
+          w={{ base: 'full', md: 52 }}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
-        <Button title="COPIAR" w="32" mt={7} onClick={handleCopyClick} />
+        <Button
+          title="COPIAR"
+          w={{ base: 40, md: '32' }}
+          mt={{ base: 12, md: 6 }}
+          right={{ base: 0, md: 14 }}
+          onClick={handleCopyClick}
+        />
       </HStack>
 
-      <HStack ml={80}>
+      <HStack spacing={{ base: 2, md: 4 }} w="100%">
         <Input
           title="Gerar novo depósito"
           placeholder="Valor R$ 0,00"
-          color="black"
-          w={{ base: 'full', md: '96' }}
           h="12"
+          w={{ base: 'full', md: 52 }}
         />
-        <Button title="GERAR" w="32" mt={7} />
+        <Button
+          title="GERAR"
+          w={{ base: 40, md: '32' }}
+          mt={{ base: 4, md: 6 }}
+        />
       </HStack>
 
-      <Text
-        fontWeight="bold"
-        color="black"
-        fontSize={19}
-        mx={{ base: 2, md: 52 }}
-        mt={10}
-      >
+      <Text fontWeight="bold" color="black" fontSize={19} w="100%" mt={10}>
         SAQUES
       </Text>
-      <HStack ml={52}>
+      <HStack spacing={{ base: 2, md: 4 }} w="100%">
         <Input
           title="QR Code para Saque"
           placeholder="Digite o copia e cola"
-          color="black"
-          w={{ base: 'full', md: '96' }}
           h="12"
+          w={{ base: 'full', md: 52 }}
         />
 
         <Popover isOpen={showPopover} onClose={() => setShowPopover(false)}>
           <PopoverTrigger>
             {loading2 ? (
-              <Spinner size={'lg'} color="black" mx={'6'} mt={3} />
+              <Spinner
+                size={'lg'}
+                color="black"
+                mx={{ base: 2, md: 0 }}
+                mt={{ base: 3, md: 0 }}
+              />
             ) : (
               <Button
                 title="Buscar"
-                w="32"
-                mt={7}
+                w={{ base: 40, md: '32' }}
+                mt={{ base: 4, md: 6 }}
                 onClick={handleButtonClick}
               />
             )}
           </PopoverTrigger>
           <Portal>
             <PopoverContent
-              w={96}
-              h={64}
+              w={{ base: 'full', md: '96' }}
+              h={{ base: '120', md: '80' }}
               justifyContent={'center'}
               alignItems={'center'}
             >
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverBody>
-                <Text
-                  fontSize={19}
-                  textAlign={'center'}
-                  fontWeight="bold"
-                  color="black"
-                  mt={2}
-                >
-                  Okto Pagamentos S.A
-                </Text>
-                <Text
-                  fontSize={22}
-                  fontWeight="bold"
-                  color="black"
-                  textAlign={'center'}
-                  mt={2}
-                >
-                  R$ 500,00
-                </Text>
-                <Center>
-                  <Button title="PAGAR" w="16" mt={2} />
-                </Center>
-              </PopoverBody>
+              <Text
+                fontSize={19}
+                textAlign={'center'}
+                fontWeight="bold"
+                color="black"
+                mt={2}
+              >
+                Okto Pagamentos S.A
+              </Text>
+              <Text
+                fontSize={22}
+                fontWeight="bold"
+                color="black"
+                textAlign={'center'}
+                mt={2}
+              >
+                R$ 500,00
+              </Text>
+              <Center>
+                <Button title="PAGAR" w="16" mt={2} />
+              </Center>
             </PopoverContent>
           </Portal>
         </Popover>
@@ -396,86 +369,65 @@ function MotherAcount() {
         )}
       </HStack>
 
-      <HStack ml={52}>
+      <HStack spacing={{ base: 2, md: 4 }} w="100%">
         <Input
           title="Saque por Chave Pix"
           placeholder="82828830303"
-          color="black"
-          w={{ base: 'full', md: '96' }}
           h="12"
+          w={{ base: 'full', md: 52 }}
         />
 
-        <Button title="Buscar" w="32" mt={7} />
+        <Button
+          title="Buscar"
+          w={{ base: 40, md: '32' }}
+          mt={{ base: 4, md: 6 }}
+        />
       </HStack>
 
-      <Text
-        fontWeight="bold"
-        color="black"
-        fontSize={19}
-        mx={{ base: 2, md: 52 }}
-        mt={12}
-      >
+      <Text fontWeight="bold" color="black" fontSize={19} w="100%" mt={12}>
         TRANSFERÊNCIA INTERNA
       </Text>
-      <HStack>
+      <HStack spacing={{ base: 2, md: 4 }} w="100%">
         <Input
           placeholder="Transferir para este CPF"
-          color="black"
-          w={{ base: 'full', md: '96' }}
           h="12"
-          ml={52}
+          w={{ base: 'full', md: 52 }}
         />
 
         <Popover>
           <PopoverTrigger>
-            <Button title="Buscar" w="32" />
+            <Button title="Buscar" w={{ base: 40, md: '32' }} />
           </PopoverTrigger>
           <Portal>
             <PopoverContent
-              w={96}
-              h={64}
+              w={{ base: 'full', md: '96' }}
+              h={{ base: '120', md: '60' }}
               justifyContent={'center'}
               alignItems={'center'}
             >
-              <PopoverArrow />
-
-              <PopoverCloseButton />
-              <PopoverBody>
-                <Text textAlign={'center'}>Saldo: R$8,999,89</Text>
-                <Text textAlign={'center'} fontWeight="bold" color="black">
-                  Enviando para BRUNA SOUZA DE BRITO
-                </Text>
+              <Text textAlign={'center'}>Saldo: R$8,999,89</Text>
+              <Text textAlign={'center'} fontWeight="bold" color="black">
+                Enviando para BRUNA SOUZA DE BRITO
+              </Text>
+              <Text fontWeight="bold" color="black" textAlign={'center'}>
+                CPF 8392883928
+              </Text>
+              <HStack>
                 <Text fontWeight="bold" color="black" textAlign={'center'}>
-                  CPF 8392883928
+                  R$
                 </Text>
-                <HStack>
-                  <Text fontWeight="bold" color="black" textAlign={'center'}>
-                    R$
-                  </Text>
-                  <Input
-                    placeholder="50.000,00"
-                    color="black"
-                    w={'52'}
-                    h="10"
-                  />
-                  <Button title="Concluir" w="16" />
-                </HStack>
-              </PopoverBody>
+                <Input placeholder="50.000,00" color="black" w={'52'} h="10" />
+                <Button title="Concluir" w="16" />
+              </HStack>
             </PopoverContent>
           </Portal>
         </Popover>
       </HStack>
 
-      <Text
-        fontWeight="bold"
-        color="black"
-        fontSize={19}
-        mx={{ base: 2, md: 52 }}
-        mt={20}
-      >
+      <Text fontWeight="bold" color="black" fontSize={19} w="100%" mt={20}>
         EXTRATO
       </Text>
-      <TableContainer ml={{ base: 2, md: 52 }}>
+      <TableContainer>
         <Table size="lg">
           <Thead>
             <Tr>
@@ -506,7 +458,7 @@ function MotherAcount() {
           </Tbody>
         </Table>
       </TableContainer>
-    </Box>
+    </VStack>
   )
 }
 
