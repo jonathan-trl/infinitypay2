@@ -104,7 +104,7 @@ function MotherAcount() {
     }
   }, [paymentCompleted])
   return (
-    <Box flex={1}>
+    <Box flex={1} w={'100%'}>
       <VStack p={4} ml={{ base: 0, md: 52 }}>
         <HStack justifyContent="space-between" w="100%">
           <Text fontSize={{ base: 20, md: 30 }} fontWeight="bold" color="black">
@@ -436,7 +436,8 @@ function MotherAcount() {
         <Text fontWeight="bold" color="black" fontSize={19} w="100%" mt={20}>
           EXTRATO
         </Text>
-        <TableContainer>
+
+        <TableContainer ml={{ base: 2, md: 52 }}>
           <Table size="lg">
             <Thead>
               <Tr>
