@@ -105,7 +105,7 @@ function MotherAcount() {
   }, [paymentCompleted])
   return (
     <Box flex={1}>
-      <VStack p={4} align="stretch" ml={{ base: 0, md: 52 }}>
+      <VStack p={4} ml={{ base: 0, md: 52 }}>
         <HStack justifyContent="space-between" w="100%">
           <Text fontSize={{ base: 20, md: 30 }} fontWeight="bold" color="black">
             Configuração de usuário
