@@ -28,7 +28,7 @@ function DashBoard() {
             spacing={4}
             align="stretch"
           >
-            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: 'full', md: 64 }}>
+            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: '96', md: 64 }}>
               <Text
                 fontSize={22}
                 my={5}
@@ -52,7 +52,7 @@ function DashBoard() {
               </Text>
             </Box>
 
-            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: 'full', md: 64 }}>
+            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: '96', md: 64 }}>
               <Text
                 fontSize={22}
                 mt={5}
@@ -76,7 +76,7 @@ function DashBoard() {
               </Text>
             </Box>
 
-            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: 'full', md: 64 }}>
+            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: '96', md: 64 }}>
               <Text
                 fontSize={22}
                 mt={5}
@@ -104,7 +104,7 @@ function DashBoard() {
             spacing={4}
             align="stretch"
           >
-            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: 'full', md: 64 }}>
+            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: '96', md: 64 }}>
               <Text
                 fontSize={22}
                 mt={5}
@@ -128,7 +128,7 @@ function DashBoard() {
               </Text>
             </Box>
 
-            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: 'full', md: 64 }}>
+            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: '96', md: 64 }}>
               <Text
                 fontSize={22}
                 mt={5}
@@ -152,7 +152,7 @@ function DashBoard() {
               </Text>
             </Box>
 
-            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: 'full', md: 64 }}>
+            <Box bg={'black'} h={52} mx={2} my={2} w={{ base: '96', md: 64 }}>
               <Text
                 fontSize={22}
                 mt={5}

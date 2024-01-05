@@ -40,6 +40,7 @@ const Header = () => {
         >
           <HStack
             justifyContent={{ base: 'space-around', md: 'space-between' }}
+            mx={{ base: 0, md: 52 }}
           >
             <Center>
               <HStack>
