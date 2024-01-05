@@ -139,7 +139,10 @@ function MotherAcount() {
         <Text fontWeight="bold" color="black" fontSize={19}>
           Situação
         </Text>
-        <HStack spacing={4}>
+        <HStack
+          spacing={{ base: 2, md: 4 }}
+          flexDirection={{ base: 'column', md: 'row' }}
+        >
           {active ? (
             <HStack>
               <Text color="#17c972" m={10} fontWeight="bold">
@@ -151,7 +154,7 @@ function MotherAcount() {
               />
             </HStack>
           ) : (
-            <HStack>
+            <HStack flexDirection={{ base: 'column', md: 'row' }}>
               <Text color="red" m={10} fontWeight="bold">
                 Desativado
               </Text>
