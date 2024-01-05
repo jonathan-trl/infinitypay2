@@ -46,10 +46,11 @@ const Header = () => {
                 <Text
                   fontWeight="bold"
                   textAlign={{ base: 'center', md: 'left' }}
+                  fontSize={{ base: 'sm', md: 'lg' }}
                 >
                   Saldo R$ 8.503,87
                 </Text>
-                <ArrowsClockwise color="white" size={16} />
+                <ArrowsClockwise color="white" />
               </HStack>
             </Center>
 
@@ -58,6 +59,7 @@ const Header = () => {
                 color={'white'}
                 textDecorationLine={'underline'}
                 fontWeight="bold"
+                fontSize={{ base: 'sm', md: 'lg' }}
                 onClick={() => router.push('/motheracount')}
               >
                 Acessar Conta Mãe
@@ -67,23 +69,27 @@ const Header = () => {
             <Center>
               <HStack>
                 <Menu>
-                  <MenuButton>Administrador@gmail.com</MenuButton>
+                  <MenuButton fontSize={{ base: 'sm', md: 'md' }}>
+                    Administrador@gmail.com
+                  </MenuButton>
                   <MenuList>
                     <MenuItem
                       color={'black'}
+                      fontSize={{ base: 'sm', md: 'md' }}
                       onClick={() => console.log('Senha')}
                     >
                       Alterar Senha
                     </MenuItem>
                     <MenuItem
                       color={'black'}
+                      fontSize={{ base: 'sm', md: 'md' }}
                       onClick={() => console.log('Sair')}
                     >
                       Sair
                     </MenuItem>
                   </MenuList>
                 </Menu>
-                <User color="white" size={16} />
+                <User color="white" />
               </HStack>
             </Center>
           </HStack>
