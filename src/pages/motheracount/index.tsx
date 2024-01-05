@@ -165,7 +165,7 @@ function MotherAcount() {
                 </PopoverTrigger>
                 <Portal>
                   <PopoverContent
-                    w={{ base: 'full', md: '96' }}
+                    w={{ base: '96', md: '96' }}
                     h={{ base: '240', md: '80' }}
                     justifyContent={'center'}
                     alignItems={'center'}
@@ -335,7 +335,7 @@ function MotherAcount() {
           </PopoverTrigger>
           <Portal>
             <PopoverContent
-              w={{ base: 'full', md: '96' }}
+              w={{ base: '96', md: '96' }}
               h={{ base: '120', md: '80' }}
               justifyContent={'center'}
               alignItems={'center'}
@@ -403,7 +403,7 @@ function MotherAcount() {
           </PopoverTrigger>
           <Portal>
             <PopoverContent
-              w={{ base: 'full', md: '96' }}
+              w={{ base: '96', md: '96' }}
               h={{ base: '120', md: '60' }}
               justifyContent={'center'}
               alignItems={'center'}
