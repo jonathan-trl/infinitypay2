@@ -2,39 +2,20 @@ import { ButtonLogin } from '@/src/components/ButtonLogin'
 import { Card } from '@/src/components/Card'
 import { InputLogin } from '@/src/components/InputLogin'
 
-import {
-  Box,
-  HStack,
-  Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Button as ChakraButton,
-  Center,
-  VStack,
-} from '@chakra-ui/react'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import Email from '@/src/assets/images/Email-Icon.svg'
-import Password from '@/src/assets/images/Password-Icon.svg'
 import Logo from '@/src/assets/images/Logo.png'
-import Image from 'next/image'
-import { EnvelopeSimple } from '@phosphor-icons/react'
 import { useAuth } from '@/src/context/authContext'
+import { Box, Center, Text, VStack } from '@chakra-ui/react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 function Login() {
-  const { login } = useAuth()
+  const { login, errorMessage, clearErrorMessage } = useAuth()
   const router = useRouter()
-
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLogin = () => {
-    login(username, password)
+  const handleLogin = async () => {
+    await login(username, password)
   }
 
   return (
@@ -42,7 +23,7 @@ function Login() {
       <Center mb={4} mt={9}>
         <Image src={Logo} alt="Logo" width={100} />
       </Center>
-      <Center>
+      <Center display={'flex'} flexDir={'column'}>
         <Text
           fontFamily={'Poppins'}
           fontSize={30}
@@ -51,6 +32,12 @@ function Login() {
         >
           Bem-Vindo
         </Text>
+
+        {errorMessage && (
+          <Text color={'red'} fontSize={'medium'}>
+            {errorMessage}
+          </Text>
+        )}
       </Center>
 
       <Center justifyContent={'center'} alignItems={'center'}>

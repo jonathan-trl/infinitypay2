@@ -10,11 +10,13 @@ import api from '../api'
 
 interface State {
   userAuthenticated: boolean
+  errorMessage: string | null
 }
 
 interface Actions {
-  login: (username: string, password: string) => void
+  login: (username: string, password: string) => Promise<void>
   logout: () => void
+  clearErrorMessage: () => void
 }
 
 interface AuthContext extends State, Actions {}
@@ -27,6 +29,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [userAuthenticated, setUserAuthenticated] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -50,9 +53,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('_a_t', token) // t = token
       localStorage.setItem('_uid', response.data.id) // uid = usuario id
       setUserAuthenticated(true)
-    } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
-      console.error('Erro ao realizar a requisição:', error)
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        setErrorMessage(
+          'Credenciais incorretas. Verifique seu nome de usuário e senha.',
+        )
+        setTimeout(() => {
+          clearErrorMessage()
+        }, 5000)
+        console.error('Erro ao realizar a requisição:', error)
+      } else {
+        alert('Houve um erro ao realizar a requisição')
+        console.error('Erro ao realizar a requisição:', error)
+      }
     }
   }
 
@@ -62,11 +75,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('_a_t')
     localStorage.removeItem('_uid')
     localStorage.removeItem('_u_account')
+    setErrorMessage(null)
     router.push('/')
   }
 
+  const clearErrorMessage = () => {
+    setErrorMessage(null)
+  }
+
   return (
-    <AuthContext.Provider value={{ userAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        userAuthenticated,
+        login,
+        logout,
+        clearErrorMessage,
+        errorMessage,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
