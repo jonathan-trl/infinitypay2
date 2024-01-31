@@ -2,42 +2,45 @@ import { Button } from '@/src/components/Button'
 import { ButtonAccount } from '@/src/components/ButtonAccount'
 import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { Input } from '@/src/components/Input'
-import { Data } from '@/src/data/InfoData'
+import ClientService from '@/src/services/ClientService'
+import { ListAllClientsParamsRequest } from '@/src/types/Client/Request'
+import { ClientResponse } from '@/src/types/Client/Response'
+import { formatDate } from '@/src/utils/formatDate'
 import {
   Box,
-  HStack,
-  Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Button as NativeButton,
   Center,
+  Flex,
+  HStack,
   Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
   PopoverArrow,
+  PopoverBody,
   PopoverCloseButton,
-  PopoverAnchor,
+  PopoverContent,
+  PopoverTrigger,
   Portal,
   Spinner,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
 } from '@chakra-ui/react'
-import { ArrowsClockwise, CheckCircle, Plus } from '@phosphor-icons/react'
+import { ArrowsClockwise, CheckCircle } from '@phosphor-icons/react'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function Acounts() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [paymentCompleted, setPaymentCompleted] = useState(false)
   const [amount, setAmount] = useState('')
+  const [clients, setClients] = useState<ClientResponse[]>([])
+  const [searchedClients, setSearchedClients] = useState<ClientResponse[]>([])
+  const [inputDocumentNumber, setInputDocumentNumber] = useState('')
+  const [inputName, setInputName] = useState('')
 
   const handleButtonClick = async () => {
     setLoading(true)
@@ -52,6 +55,39 @@ function Acounts() {
     }, 3000)
   }
 
+  const fetchClientes = async () => {
+    try {
+      const newClients = await ClientService.listAll()
+      setClients(newClients)
+    } catch (error) {
+      alert('Houve um erro ao realizar a requisição')
+      console.error('Erro ao realizar a requisição:', error)
+    }
+  }
+
+  const handleSearchByParams = async () => {
+    try {
+      const params: ListAllClientsParamsRequest = {
+        name: inputName.trim(),
+        documentNumber: inputDocumentNumber.trim().replace(/\D/g, ''),
+      }
+
+      if (params.documentNumber !== '' || params.name !== '') {
+        const newClients = await ClientService.listAll(params)
+        setSearchedClients(newClients)
+      }
+    } catch (error) {
+      alert('Houve um erro ao realizar a requisição')
+      console.error('Erro ao realizar a requisição:', error)
+    }
+    setInputName('')
+    setInputDocumentNumber('')
+  }
+
+  useEffect(() => {
+    fetchClientes()
+  }, [])
+
   return (
     <Box flex={1}>
       <Text
@@ -65,19 +101,33 @@ function Acounts() {
         Todas as Contas
       </Text>
 
-      <HStack spacing={4} ml={{ base: 2, md: 52 }}>
-        <Input placeholder="Pesquisar Nome" />
-        <ButtonSearch />
+      <Box flexDir={'column'} ml={{ base: 2, md: 52 }}>
+        <Flex gap={3}>
+          <Box>
+            <Input
+              placeholder="Pesquisar Nome"
+              value={inputName}
+              onChange={(e) => setInputName(e.target.value)}
+            />
+          </Box>
+
+          <Box>
+            <Input
+              placeholder="Pesquisar CPF"
+              value={inputDocumentNumber}
+              onChange={(e) => setInputDocumentNumber(e.target.value)}
+            />
+          </Box>
+
+          <ButtonSearch onClick={handleSearchByParams} />
+        </Flex>
+
         <Button
           title="Nova Conta"
           onClick={() => router.push('/acounts/newacounts')}
         />
-      </HStack>
+      </Box>
 
-      <HStack spacing={4} ml={52}>
-        <Input placeholder="Pesquisar CPF" />
-        <ButtonSearch />
-      </HStack>
       <TableContainer ml={{ base: 2, md: 52 }}>
         <Table size={{ base: 'sm', md: 'lg' }}>
           <Thead>
@@ -93,14 +143,18 @@ function Acounts() {
             </Tr>
           </Thead>
           <Tbody>
-            {Data.map((info, index) => (
+            {clients.map((client, index) => (
               <Tr key={index}>
-                <Td fontWeight={'bold'}>{info.date}</Td>
-                <Td fontWeight={'bold'}>{info.name}</Td>
-                <Td fontWeight={'bold'}>{info.account}</Td>
-                <Td fontWeight={'bold'}>{info.document}</Td>
+                <Td fontWeight={'bold'}>{formatDate(client.createdAt)}</Td>
+                <Td fontWeight={'bold'}>{client.name}</Td>
+                <Td fontWeight={'bold'}>
+                  <Text>{client.account.map((i) => i.account)}</Text>
+                </Td>
+                <Td fontWeight={'bold'}>{client.documentNumber}</Td>
 
-                <Td fontWeight={'bold'}>{info.status}</Td>
+                <Td fontWeight={'bold'}>
+                  {client.active ? 'Ativo' : 'Desativado'}
+                </Td>
                 <Td fontWeight={'bold'}>
                   <Popover>
                     <PopoverTrigger>
@@ -177,7 +231,14 @@ function Acounts() {
                 </Td>
                 <Td fontWeight={'bold'}>
                   <HStack>
-                    <Text>{info.balance}</Text>
+                    <Text>
+                      {client.account.map((i) =>
+                        i.balance.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL',
+                        }),
+                      )}
+                    </Text>
 
                     <ArrowsClockwise
                       onClick={() => console.log('Load')}
@@ -186,24 +247,16 @@ function Acounts() {
                   </HStack>
                 </Td>
                 <Td fontWeight={'bold'}>
-                  <Box
-                    w={5}
-                    h={5}
-                    borderWidth={1}
-                    borderColor={'black'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    onClick={() => console.log('Ações')}
-                  >
-                    <Center>
-                      <Plus size={19} />
-                    </Center>
-                  </Box>
+                  <Button
+                    title="Editar"
+                    onClick={() => router.push(`/settings/${client.id}`)}
+                  />
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
+        {clients.length === 0 && <Text>Nenhum item encontrado!</Text>}
       </TableContainer>
     </Box>
   )

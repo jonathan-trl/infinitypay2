@@ -125,7 +125,7 @@ const NavBar = () => {
           <HStack
             display="flex"
             position="fixed"
-            top="0"
+            top="-3"
             right="4"
             p="4"
             color="white"
@@ -135,8 +135,7 @@ const NavBar = () => {
               aria-label="Open menu"
               onClick={onOpen}
               variant="ghost"
-              color={'black'}
-              mt={12}
+              color={'white'}
             />
           </HStack>
         )
@@ -146,18 +145,17 @@ const NavBar = () => {
         <HStack
           display={{ base: 'none', md: 'flex' }}
           position="fixed"
-          top="0"
+          top="-3"
           right="4"
           p="4"
-          color="white"
+          color="black"
         >
           <IconButton
             icon={<FaArrowLeft />}
             aria-label="Close menu"
             onClick={onClose}
             variant="ghost"
-            color={'black'}
-            mt={isOpen ? 8 : 0}
+            color={'white'}
           />
         </HStack>
       )}

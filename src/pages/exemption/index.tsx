@@ -1,22 +1,40 @@
-import React from 'react'
 import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { ButtonStatus } from '@/src/components/ButtonStatus'
 import { Input } from '@/src/components/Input'
-import { ExemptionData } from '@/src/data/ExemptionData'
+import ExemptionService from '@/src/services/ExemptionService'
+import { ExemptionResponse } from '@/src/types/Exception/Response'
+import { formatDate } from '@/src/utils/formatDate'
 import {
   Box,
   HStack,
-  Text,
   Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
 } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 
 function Exemption() {
+  const [exemptions, setExemptions] = useState<ExemptionResponse[]>([])
+
+  const fetchExemptions = async () => {
+    try {
+      const newExemptions = await ExemptionService.listExemptions()
+      setExemptions(newExemptions)
+    } catch (error) {
+      alert('Houve um erro ao realizar a requisição')
+      console.error('Erro ao realizar a requisição:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchExemptions()
+  }, [])
+
   return (
     <Box flex={1} p={{ base: 4, md: 8 }}>
       <Text
@@ -47,25 +65,26 @@ function Exemption() {
             </Tr>
           </Thead>
           <Tbody>
-            {ExemptionData.map((info, index) => (
+            {exemptions.map((exemption, index) => (
               <Tr key={index}>
-                <Td fontWeight="bold">{info.date}</Td>
-                <Td fontWeight="bold">{info.name}</Td>
-                <Td fontWeight="bold">{info.login}</Td>
-                <Td fontWeight="bold">{info.document}</Td>
-                <Td fontWeight="bold">{info.totalWithdraw}</Td>
+                <Td fontWeight="bold">{formatDate(exemption.createdAt)}</Td>
+                <Td fontWeight="bold">{exemption.name}</Td>
+                <Td fontWeight="bold">{exemption.login}</Td>
+                <Td fontWeight="bold">{exemption.documentNumber}</Td>
+                <Td fontWeight="bold">{exemption.account}</Td>
                 <Td fontWeight="bold">
                   <ButtonStatus
-                    waiting={info.status === 'waiting'}
-                    approved={info.status === 'approved'}
-                    denied={info.status === 'denied'}
-                    concluded={info.status === 'concluded'}
+                    waiting={exemption.service === 'waiting'}
+                    approved={exemption.service === 'approved'}
+                    denied={exemption.service === 'denied'}
+                    concluded={exemption.service === 'concluded'}
                   />
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
+        {exemptions.length === 0 && <Text>Nenhum item encontrado!</Text>}
       </TableContainer>
     </Box>
   )

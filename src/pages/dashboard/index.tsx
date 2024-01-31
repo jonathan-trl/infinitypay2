@@ -1,14 +1,61 @@
-import React from 'react'
-import { Box, Text, VStack, Stack, Center } from '@chakra-ui/react'
-import {
-  ArrowsClockwise,
-  Plus,
-  Info,
-  Check,
-  CheckCircle,
-} from '@phosphor-icons/react'
+import AdminAffiliateService from '@/src/services/AdminAffiliateService'
+import ClientService from '@/src/services/ClientService'
+import ConsultService from '@/src/services/ConsultService'
+import { CountNewClientsResponse } from '@/src/types/Client/Response'
+import { ConsultCountResponse } from '@/src/types/Consult/Response'
+import { Box, Center, Stack, Text, VStack } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 
 function DashBoard() {
+  const [totalAccounts, setTotalAccounts] = useState<CountNewClientsResponse>()
+  const [totalConsults, setTotalConsults] = useState<ConsultCountResponse>()
+
+  const fetchTotalAccounts = async () => {
+    try {
+      const response = await ClientService.countNewClients()
+      setTotalAccounts(response)
+    } catch (error) {
+      alert('Houve um erro ao realizar a requisição')
+      console.error('Erro ao realizar a requisição:', error)
+    }
+  }
+
+  const fetchTotalConsults = async () => {
+    try {
+      const response = await ConsultService.consultCount()
+      setTotalConsults(response)
+    } catch (error) {
+      alert('Houve um erro ao realizar a requisição')
+      console.error('Erro ao realizar a requisição:', error)
+    }
+  }
+
+  const fetchUser = async () => {
+    const loggedId = localStorage.getItem('_uid')
+    try {
+      const user = await AdminAffiliateService.getAdminAffiliateDetails(
+        loggedId!,
+      )
+      localStorage.setItem('_u_account', JSON.stringify(user))
+    } catch (error) {
+      alert('Houve um erro ao realizar a requisição')
+      console.error('Erro ao realizar a requisição:', error)
+    }
+  }
+
+  useEffect(() => {
+    const loggedId = localStorage.getItem('_uid')
+    console.log('loggedid: ', loggedId)
+    if (loggedId) {
+      fetchUser()
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchTotalAccounts()
+    fetchTotalConsults()
+  }, [])
+
   return (
     <Box>
       <Text
@@ -45,10 +92,10 @@ function DashBoard() {
                 fontWeight={'bold'}
                 color={'white'}
               >
-                Criadas: 2821
+                Criadas: {totalAccounts?.totalAccounts}
               </Text>
               <Text fontSize={18} mx={4} fontWeight={'bold'} color={'white'}>
-                Regulares: 2039
+                Regulares: {totalAccounts?.regularAccounts}
               </Text>
             </Box>
 
@@ -72,7 +119,7 @@ function DashBoard() {
                 fontWeight={'bold'}
                 color={'white'}
               >
-                2039
+                {totalAccounts?.lastThirtyDays}
               </Text>
             </Box>
 
@@ -124,7 +171,7 @@ function DashBoard() {
                 fontWeight={'bold'}
                 color={'white'}
               >
-                2039
+                {totalConsults?.total}
               </Text>
             </Box>
 
@@ -148,7 +195,7 @@ function DashBoard() {
                 fontWeight={'bold'}
                 color={'white'}
               >
-                1039
+                {totalConsults?.news}
               </Text>
             </Box>
 

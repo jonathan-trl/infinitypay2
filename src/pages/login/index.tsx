@@ -30,6 +30,13 @@ function Login() {
   const { login } = useAuth()
   const router = useRouter()
 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLogin = () => {
+    login(username, password)
+  }
+
   return (
     <Box flex={1} justifyContent={'center'}>
       <Center mb={4} mt={9}>
@@ -48,9 +55,18 @@ function Login() {
 
       <Center justifyContent={'center'} alignItems={'center'}>
         <Card TitleCard="Insira suas credenciais para prosseguir">
-          <InputLogin Placeholder="Documento" Icon />
+          <InputLogin
+            Placeholder="Documento"
+            Icon
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-          <InputLogin Placeholder="Senha" />
+          <InputLogin
+            Placeholder="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <VStack alignItems={'flex-end'} mx={4}>
             <Text
@@ -66,7 +82,7 @@ function Login() {
           </VStack>
 
           <VStack>
-            <ButtonLogin Title="ENTRAR" bg={'green'} onClick={login} />
+            <ButtonLogin Title="ENTRAR" bg={'green'} onClick={handleLogin} />
             <Text fontFamily={'Poppins'} color={'#6D6D6D'} fontSize={13}>
               Não possui uma conta?
             </Text>

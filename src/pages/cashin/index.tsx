@@ -1,24 +1,66 @@
 import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { Input } from '@/src/components/Input'
-import { CashInData } from '../../data/CashInData'
+import AccountService from '@/src/services/AccountService'
+import { GetAccountExtractRequestParams } from '@/src/types/Account/Request'
+import { AccountExtractMovements } from '@/src/types/Account/Response'
+import { IClient } from '@/src/types/Client'
+import { formatDate } from '@/src/utils/formatDate'
 import {
   Box,
   HStack,
-  Text,
   Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
   TableContainer,
-  Button as NativeButton,
-  Center,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
 } from '@chakra-ui/react'
 import { Info } from '@phosphor-icons/react'
+import { useEffect, useState } from 'react'
 
 function CashIn() {
+  const [cashInMovements, setCashInMovements] = useState<
+    AccountExtractMovements[]
+  >([])
+
+  const fetchExtract = async () => {
+    const userAccount = localStorage.getItem('_u_account')
+    const user: IClient = JSON.parse(userAccount!)
+    try {
+      if (user) {
+        const params: GetAccountExtractRequestParams = {
+          account: user.account[0].account,
+          documentNumber: user.documentNumber,
+        }
+
+        const extracts = await AccountService.getAccountExtract(params)
+
+        if (extracts && extracts.body) {
+          const { movements } = extracts.body
+
+          const filteredCashInMovements = movements.filter(
+            (movement) => movement.balanceType === 'CREDIT',
+          )
+
+          // Atualizar o estado com os movimentos filtrados
+          setCashInMovements(filteredCashInMovements)
+        }
+      }
+    } catch (error) {
+      alert('Houve um erro ao realizar a requisição')
+      console.error('Erro ao realizar a requisição:', error)
+    }
+  }
+
+  useEffect(() => {
+    const userAccount = localStorage.getItem('_u_account')
+    if (userAccount) {
+      fetchExtract()
+    }
+  }, [])
+
   return (
     <Box flex={1}>
       <Text
@@ -51,22 +93,32 @@ function CashIn() {
             </Tr>
           </Thead>
           <Tbody>
-            {CashInData.map((info, index) => (
+            {cashInMovements.map((info, index) => (
               <Tr key={index}>
-                <Td fontWeight={'bold'}>{info.user}</Td>
-                <Td fontWeight={'bold'}>{info.date}</Td>
-                <Td fontWeight={'bold'}>{info.type}</Td>
-                <Td fontWeight={'bold'}>{info.status}</Td>
-
-                <Td fontWeight={'bold'}>{info.total}</Td>
-                <Td fontWeight={'bold'}>{info.liquid}</Td>
-                <Td fontWeight={'bold'}>
+                <Td fontWeight="bold">{info.name}</Td>
+                <Td fontWeight="bold">{formatDate(info.createDate)}</Td>
+                <Td fontWeight="bold">{info.balanceType}</Td>
+                <Td fontWeight="bold">{info.status}</Td>
+                <Td fontWeight="bold">
+                  {info.amount.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}
+                </Td>
+                <Td fontWeight="bold">
+                  {info.amount.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}
+                </Td>
+                <Td fontWeight="bold">
                   <Info color="black" size={20} />
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
+        {cashInMovements.length === 0 && <Text>Nenhum item encontrado!</Text>}
       </TableContainer>
     </Box>
   )

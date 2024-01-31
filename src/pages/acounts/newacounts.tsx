@@ -1,52 +1,107 @@
 import { Button } from '@/src/components/Button'
-import { ButtonAccount } from '@/src/components/ButtonAccount'
 import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { Input } from '@/src/components/Input'
-import { Data } from '@/src/data/InfoData'
-import {
-  Box,
-  HStack,
-  Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Button as NativeButton,
-  Center,
-} from '@chakra-ui/react'
-import { ArrowsClockwise, Plus } from '@phosphor-icons/react'
+import ClientService from '@/src/services/ClientService'
+import ConsultService from '@/src/services/ConsultService'
+import { CreateClientRequest } from '@/src/types/Client/Request'
+import { ConsultCepResponse } from '@/src/types/Consult/Response'
+import { Box, FormControl, HStack, Select, Text } from '@chakra-ui/react'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-type FormatDataProps = {
-  cpf: string
-  phone: string
-  email: string
-}
 function NewAcounts() {
   const router = useRouter()
+
   const newAccountSchema = yup.object({
-    cpf: yup.string().required('Informe O CPF'),
+    documentNumber: yup.string().required('Informe o CPF'),
+    name: yup.string().required('Informe o Nome'),
     phone: yup.string().required('Informe o Telefone'),
-    email: yup.string().required('Informe o E-mail'),
+    email: yup.string().required('Informe o Email'),
+    motherName: yup.string().required('Informe o nome da mãe'),
+    socialName: yup.string().required('Informe o nome social'),
+    birthDate: yup.string().required('Informe a data de nascimento'),
+    politicallyExposedPerson: yup
+      .boolean()
+      .required('Informe se você é uma pessoa políticamente exposta '),
+    cep: yup.string().required('Informe o CEP'),
+    street: yup.string().required('Informe a Rua'),
+    number: yup.string().required('Informe o Número'),
+    complement: yup.string().required('Informe o Complemento'),
+    neighborhood: yup.string().required('Informe o Bairro'),
+    city: yup.string().required('Informe a Cidade'),
+    state: yup.string().required('Informe o Estado'),
   })
 
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormatDataProps>({
+    getValues,
+    setValue,
+    setError,
+    clearErrors,
+  } = useForm<CreateClientRequest>({
     resolver: yupResolver(newAccountSchema),
   })
-  async function handleNewAccount({ cpf }: FormatDataProps) {
-    console.log('Cpf:', cpf)
+
+  async function handleNewAccount(data: CreateClientRequest) {
+    console.log(data)
+    const response = await ClientService.create(data)
+    console.log(response)
   }
+
+  const handleConsultCpf = async () => {
+    try {
+      const cpf = getValues('documentNumber')
+      const birthDate = getValues('birthDate')
+
+      if (cpf === undefined) {
+        setError('documentNumber', {
+          type: 'required',
+          message: 'Digite o CPF',
+        })
+      }
+
+      if (birthDate === undefined) {
+        setError('birthDate', {
+          type: 'required',
+          message: 'Digite a data de nascimento',
+        })
+      }
+
+      if (cpf === undefined || birthDate === undefined) {
+        return false
+      }
+
+      clearErrors('documentNumber')
+      clearErrors('birthDate')
+
+      const response = await ConsultService.consultCpf(cpf, birthDate)
+
+      console.log(response)
+    } catch (error) {
+      alert('Houve um erro ao realizar a requisição')
+      console.error('Erro ao realizar a requisição:', error)
+    }
+  }
+
+  const handleConsultCep = async () => {
+    try {
+      const cep = getValues('cep')
+      const response: ConsultCepResponse = await ConsultService.consultCep(cep)
+      setValue('neighborhood', response.bairro)
+      setValue('city', response.localidade)
+      setValue('street', response.logradouro)
+      setValue('state', response.uf)
+      setValue('neighborhood', response.bairro)
+    } catch (error) {
+      alert('Houve um erro ao realizar a requisição')
+      console.error('Erro ao realizar a requisição:', error)
+    }
+  }
+
   return (
     <Box flex={1} ml={52}>
       <Text
@@ -83,22 +138,33 @@ function NewAcounts() {
           <HStack spacing={4} alignItems={'center'}>
             <Controller
               control={control}
-              name="cpf"
+              name="documentNumber"
               render={({ field: { onChange, value } }) => (
                 <Input
                   title="CPF*"
-                  value={value}
-                  errorMessage={errors.cpf?.message}
+                  value={value || ''}
+                  errorMessage={errors.documentNumber?.message}
                   onChange={onChange}
                 />
               )}
             />
 
-            <ButtonSearch />
+            <ButtonSearch onClick={handleConsultCpf} />
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="Nome*" />
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="Nome*"
+                  value={value || ''}
+                  errorMessage={errors.name?.message}
+                  onChange={onChange}
+                />
+              )}
+            />
           </HStack>
           <HStack spacing={4}>
             <Controller
@@ -107,7 +173,7 @@ function NewAcounts() {
               render={({ field: { onChange, value } }) => (
                 <Input
                   title="Telefone*"
-                  value={value}
+                  value={value || ''}
                   errorMessage={errors.phone?.message}
                   onChange={onChange}
                 />
@@ -121,7 +187,7 @@ function NewAcounts() {
               render={({ field: { onChange, value } }) => (
                 <Input
                   title="E-mail*"
-                  value={value}
+                  value={value || ''}
                   errorMessage={errors.email?.message}
                   onChange={onChange}
                 />
@@ -130,50 +196,186 @@ function NewAcounts() {
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="Nome da Mãe*" />
+            <Controller
+              control={control}
+              name="motherName"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="Nome da Mãe*"
+                  value={value || ''}
+                  errorMessage={errors.motherName?.message}
+                  onChange={onChange}
+                />
+              )}
+            />
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="Nome Social" />
+            <Controller
+              control={control}
+              name="socialName"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="Nome Social"
+                  value={value || ''}
+                  errorMessage={errors.socialName?.message}
+                  onChange={onChange}
+                />
+              )}
+            />
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="Data de Nascimento*" />
+            <Controller
+              control={control}
+              name="birthDate"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="Data de Nascimento*"
+                  type="date"
+                  value={value || ''}
+                  errorMessage={errors.birthDate?.message}
+                  onChange={onChange}
+                  onBlur={(e) => {
+                    const formattedDate = new Date(e.target.value)
+                      .toISOString()
+                      .split('T')[0]
+                    onChange(formattedDate)
+                  }}
+                />
+              )}
+            />
           </HStack>
         </Box>
 
         <Box mx={20}>
           <HStack spacing={4} alignItems={'center'}>
-            <Input title="Pessoa Politicamente Exposta*" />
+            <Controller
+              control={control}
+              name="politicallyExposedPerson"
+              render={({ field: { onChange, value } }) => (
+                <FormControl>
+                  <Text fontWeight={'bold'} color={'black'} fontSize={19}>
+                    Pessoa políticamente exposta?*
+                  </Text>
+                  <Select
+                    borderColor="black"
+                    borderWidth={2}
+                    w="full"
+                    onChange={(e) => onChange(e.target.value)}
+                  >
+                    <option value={1}>Sim</option>
+                    <option value={0}>Não</option>
+                  </Select>
+                </FormControl>
+              )}
+            />
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="CEP*" />
-            <ButtonSearch />
+            <Controller
+              control={control}
+              name="cep"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="CEP*"
+                  value={value || ''}
+                  errorMessage={errors.politicallyExposedPerson?.message}
+                  onChange={onChange}
+                />
+              )}
+            />
+            <ButtonSearch onClick={handleConsultCep} />
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="Número*" />
+            <Controller
+              control={control}
+              name="street"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="Rua*"
+                  value={value || ''}
+                  errorMessage={errors.street?.message}
+                  onChange={onChange}
+                />
+              )}
+            />
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="Rua*" />
+            <Controller
+              control={control}
+              name="neighborhood"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="Bairro*"
+                  value={value || ''}
+                  errorMessage={errors.neighborhood?.message}
+                  onChange={onChange}
+                />
+              )}
+            />
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="Complemento" />
+            <Controller
+              control={control}
+              name="city"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="Cidade*"
+                  value={value || ''}
+                  errorMessage={errors.city?.message}
+                  onChange={onChange}
+                />
+              )}
+            />
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="Bairro*" />
+            <Controller
+              control={control}
+              name="state"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="UF*"
+                  value={value || ''}
+                  errorMessage={errors.state?.message}
+                  onChange={onChange}
+                />
+              )}
+            />
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="Cidade*" />
+            <Controller
+              control={control}
+              name="number"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="Número*"
+                  value={value || ''}
+                  errorMessage={errors.number?.message}
+                  onChange={onChange}
+                />
+              )}
+            />
           </HStack>
 
           <HStack spacing={4}>
-            <Input title="UF*" />
+            <Controller
+              control={control}
+              name="complement"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  title="Complemento"
+                  value={value || ''}
+                  errorMessage={errors.complement?.message}
+                  onChange={onChange}
+                />
+              )}
+            />
           </HStack>
         </Box>
       </HStack>

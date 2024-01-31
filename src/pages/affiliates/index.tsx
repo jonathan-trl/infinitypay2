@@ -1,23 +1,40 @@
-import React from 'react'
 import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { Input } from '@/src/components/Input'
-import { AffiliatesData } from '@/src/data/AffiliatesData'
 
+import AdminAffiliateService from '@/src/services/AdminAffiliateService'
+import { GetAffiliatesListResponse } from '@/src/types/AdminAffiliate/Response'
 import {
   Box,
   HStack,
-  Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
   Button as NativeButton,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
 } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 
 function Affiliates() {
+  const [affiliates, setAffiliates] = useState<GetAffiliatesListResponse[]>([])
+
+  const fetchAffiliates = async () => {
+    try {
+      const newAffiliates = await AdminAffiliateService.getAffiliatesList()
+      setAffiliates(newAffiliates)
+    } catch (error) {
+      alert('Houve um erro ao realizar a requisição')
+      console.error('Erro ao realizar a requisição:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchAffiliates()
+  }, [])
+
   return (
     <Box flex={1} p={{ base: 4, md: 8 }}>
       <Text
@@ -49,14 +66,14 @@ function Affiliates() {
             </Tr>
           </Thead>
           <Tbody>
-            {AffiliatesData.map((info, index) => (
+            {affiliates.map((affiliate, index) => (
               <Tr key={index}>
-                <Td fontWeight="bold">{info.email}</Td>
-                <Td fontWeight="bold">{info.moviment}</Td>
-                <Td fontWeight="bold">{info.cashin}</Td>
-                <Td fontWeight="bold">{info.cashout}</Td>
-                <Td fontWeight="bold">{info.totalRate}</Td>
-                <Td fontWeight="bold">{info.porcentage}</Td>
+                <Td fontWeight="bold">{affiliate.email}</Td>
+                <Td fontWeight="bold">{affiliate.totalMovement}</Td>
+                <Td fontWeight="bold">{affiliate.cashIn}</Td>
+                <Td fontWeight="bold">{affiliate.cashOut}</Td>
+                <Td fontWeight="bold">{affiliate.totalInFees}</Td>
+                <Td fontWeight="bold">{affiliate.rate}</Td>
                 <Td>
                   <NativeButton
                     bg="black"
@@ -71,6 +88,7 @@ function Affiliates() {
             ))}
           </Tbody>
         </Table>
+        {affiliates.length === 0 && <Text>Nenhum item encontrado!</Text>}
       </TableContainer>
     </Box>
   )
