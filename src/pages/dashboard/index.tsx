@@ -1,6 +1,9 @@
+import AccountService from '@/src/services/AccountService'
 import AdminAffiliateService from '@/src/services/AdminAffiliateService'
 import ClientService from '@/src/services/ClientService'
 import ConsultService from '@/src/services/ConsultService'
+import { TransactionsInformatioResponse } from '@/src/types/Account/Response'
+import { IClient } from '@/src/types/Client'
 import { CountNewClientsResponse } from '@/src/types/Client/Response'
 import { ConsultCountResponse } from '@/src/types/Consult/Response'
 import { Box, Center, Stack, Text, VStack } from '@chakra-ui/react'
@@ -9,6 +12,8 @@ import { useEffect, useState } from 'react'
 function DashBoard() {
   const [totalAccounts, setTotalAccounts] = useState<CountNewClientsResponse>()
   const [totalConsults, setTotalConsults] = useState<ConsultCountResponse>()
+  const [transactionInformation, setTransactionInformation] =
+    useState<TransactionsInformatioResponse>()
 
   const fetchTotalAccounts = async () => {
     try {
@@ -30,13 +35,14 @@ function DashBoard() {
     }
   }
 
-  const fetchUser = async () => {
-    const loggedId = localStorage.getItem('_uid')
+  const fetchTransactionsInformation = async () => {
+    const userAccount = localStorage.getItem('_u_account')
+    const user: IClient = JSON.parse(userAccount!)
     try {
-      const user = await AdminAffiliateService.getAdminAffiliateDetails(
-        loggedId!,
+      const response = await AccountService.getTransactionsInformation(
+        user.account[0].account,
       )
-      localStorage.setItem('_u_account', JSON.stringify(user))
+      setTransactionInformation(response)
     } catch (error) {
       alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
@@ -45,9 +51,8 @@ function DashBoard() {
 
   useEffect(() => {
     const loggedId = localStorage.getItem('_uid')
-    console.log('loggedid: ', loggedId)
     if (loggedId) {
-      fetchUser()
+      fetchTransactionsInformation()
     }
   }, [])
 
@@ -92,10 +97,10 @@ function DashBoard() {
                 fontWeight={'bold'}
                 color={'white'}
               >
-                Criadas: {totalAccounts?.totalAccounts}
+                Criadas: {totalAccounts ? totalAccounts?.totalAccounts : 0}
               </Text>
               <Text fontSize={18} mx={4} fontWeight={'bold'} color={'white'}>
-                Regulares: {totalAccounts?.regularAccounts}
+                Regulares: {totalAccounts ? totalAccounts?.regularAccounts : 0}
               </Text>
             </Box>
 
@@ -119,7 +124,7 @@ function DashBoard() {
                 fontWeight={'bold'}
                 color={'white'}
               >
-                {totalAccounts?.lastThirtyDays}
+                {totalAccounts ? totalAccounts?.lastThirtyDays : 0}
               </Text>
             </Box>
 
@@ -141,7 +146,12 @@ function DashBoard() {
                 fontWeight={'bold'}
                 color={'white'}
               >
-                R$ 3.723.746,73
+                {transactionInformation
+                  ? transactionInformation?.cashOut.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })
+                  : 'R$ 0,00'}
               </Text>
             </Box>
           </Stack>
@@ -171,7 +181,7 @@ function DashBoard() {
                 fontWeight={'bold'}
                 color={'white'}
               >
-                {totalConsults?.total}
+                {totalConsults ? totalConsults?.total : 0}
               </Text>
             </Box>
 
@@ -195,7 +205,7 @@ function DashBoard() {
                 fontWeight={'bold'}
                 color={'white'}
               >
-                {totalConsults?.news}
+                {totalConsults ? totalConsults?.news : 0}
               </Text>
             </Box>
 
@@ -217,7 +227,12 @@ function DashBoard() {
                 fontWeight={'bold'}
                 color={'white'}
               >
-                R$ 3.323.446,98
+                {transactionInformation
+                  ? transactionInformation?.cashIn.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })
+                  : 'R$ 0,00'}
               </Text>
             </Box>
           </Stack>

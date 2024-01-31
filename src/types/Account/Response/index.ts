@@ -62,7 +62,7 @@ export type TransferBetweenAccountsResponse = {
 
 export type SendToMotherAccountResponse = TransferBetweenAccountsResponse
 
-export type UpdateStatusAccountRequest = {
+export type TransactionsInformatioResponse = {
   cashIn: number
   cashOut: number
 }

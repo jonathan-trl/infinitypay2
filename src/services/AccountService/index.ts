@@ -9,6 +9,7 @@ import {
   GetAccountBalanceResponse,
   GetAccountExtractResponse,
   SendToMotherAccountResponse,
+  TransactionsInformatioResponse,
   TransferBetweenAccountsResponse,
 } from '@/src/types/Account/Response'
 
@@ -82,7 +83,7 @@ const updateStatusAccount = async (
 
 const getTransactionsInformation = async (
   account: string,
-): Promise<UpdateStatusAccountRequest> => {
+): Promise<TransactionsInformatioResponse> => {
   try {
     const response = await api.get(
       `/accounts/transactions-information/${account}`,

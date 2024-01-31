@@ -13,10 +13,16 @@ export type Address = {
   country: string
 }
 
+export type keyPixProps = {
+  key: string
+  status: string
+  keyType: string
+}
+
 export type Account = {
   id: string
   userId: string
-  keyPix: null | string
+  keyPix: null | keyPixProps[]
   statusPix: string
   bank: string
   agency: string

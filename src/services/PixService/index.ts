@@ -16,10 +16,11 @@ import {
 } from '@/src/types/Pix/Response'
 
 const createPixKey = async (
+  id: string,
   data: CreatePixKeyRequest,
 ): Promise<PixKeyResponse> => {
   try {
-    const response = await api.post(`/pix/create-key-pix`, data)
+    const response = await api.post(`/pix/create-key-pix/${id}`, data)
     return response.data
   } catch (error) {
     console.error('Error creating PIX key:', error)
@@ -29,7 +30,9 @@ const createPixKey = async (
 
 const deletePixKey = async (key: string, account: string) => {
   try {
-    const response = await api.delete(`/pix/delete-key-pix/${key}&${account}`)
+    const response = await api.delete(
+      `/pix/delete-key-pix/${key}?account=${account}`,
+    )
     return response.data
   } catch (error) {
     console.error(`Error deleting PIX key ${key}:`, error)
