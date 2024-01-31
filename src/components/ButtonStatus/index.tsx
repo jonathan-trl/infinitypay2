@@ -26,12 +26,12 @@ export function ButtonStatus({ waiting, approved, denied, concluded }: Props) {
         {waiting
           ? 'AGUARDANDO'
           : approved
-          ? 'APROVADO'
-          : denied
-          ? 'NEGADO'
-          : concluded
-          ? 'CONCLUÍDO'
-          : ''}
+            ? 'APROVADO'
+            : denied
+              ? 'NEGADO'
+              : concluded
+                ? 'CONCLUÍDO'
+                : ''}
       </Text>
     </Button>
   )
