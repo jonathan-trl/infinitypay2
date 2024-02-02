@@ -1,6 +1,7 @@
 import { Button } from '@/src/components/Button'
 import { Input } from '@/src/components/Input'
 import TableBodyClients from '@/src/components/Pages/Accounts/TableBodyClients'
+import useCustomToast from '@/src/hooks/useCustomToast'
 import ClientService from '@/src/services/ClientService'
 import { ListAllClientsParamsRequest } from '@/src/types/Client/Request'
 import { ClientResponse } from '@/src/types/Client/Response'
@@ -24,6 +25,7 @@ function Acounts() {
   const [inputDocumentNumber, setInputDocumentNumber] = useState('')
   const [inputName, setInputName] = useState('')
   const [showSpinnerLoading, setShowSpinnerLoading] = useState(false)
+  const { showToast } = useCustomToast()
 
   const fetchClients = async () => {
     setShowSpinnerLoading(true)
@@ -88,7 +90,7 @@ function Acounts() {
 
         <Button
           title="Nova Conta"
-          onClick={() => router.push('/acounts/newacounts')}
+          onClick={() => router.push('/accounts/create')}
         />
       </Box>
 

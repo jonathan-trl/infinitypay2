@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
-function NewAcounts() {
+function CreateNewAccount() {
   const router = useRouter()
   const { showToast } = useCustomToast()
 
@@ -403,4 +403,4 @@ function NewAcounts() {
   )
 }
 
-export default NewAcounts
+export default CreateNewAccount

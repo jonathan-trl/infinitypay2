@@ -44,7 +44,7 @@ const NavBar = () => {
       }),
       create.list({
         title: 'Contas',
-        href: '/acounts',
+        href: '/accounts',
       }),
 
       create.list({
