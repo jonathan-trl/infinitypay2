@@ -1,4 +1,5 @@
 import { Button } from '@/src/components/Button'
+import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { Input } from '@/src/components/Input'
 import TableBodyClients from '@/src/components/Pages/Accounts/TableBodyClients'
 import useCustomToast from '@/src/hooks/useCustomToast'
@@ -85,7 +86,7 @@ function Acounts() {
             />
           </Box>
 
-          <Button title="Limpar" onClick={fetchClients} />
+          <ButtonSearch onClick={fetchClients} />
         </Flex>
 
         <Button
