@@ -74,7 +74,7 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
     } catch (error) {
       console.error('Erro ao realizar a requisição:', error)
       showToast(
-        'Houve um erro ao cadastrar a chave pix por CPF, tente novamente mais tarde!',
+        'Houve um erro ao cadastrar a chave pix por CPF, tipo de chave não permitido!',
         'error',
       )
       onClose()

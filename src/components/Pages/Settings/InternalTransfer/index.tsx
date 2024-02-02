@@ -9,8 +9,8 @@ import {
   HStack,
   Popover,
   PopoverContent,
-  PopoverTrigger,
   Portal,
+  Spinner,
   Text,
 } from '@chakra-ui/react'
 import { useState } from 'react'
@@ -22,48 +22,69 @@ interface InternalTransferProps {
 
 const InternalTransfer = ({ isClient, user }: InternalTransferProps) => {
   const [inputDocumentNumber, setInputDocumentNumber] = useState('')
-  const [inputTransferValue, setInputTransferValue] = useState('0')
+  const [inputTransferValue, setInputTransferValue] = useState('20')
+  const [inputPixDescription, setInputPixDescription] = useState('')
   const [client, setClient] = useState<IClient>()
   const { showToast } = useCustomToast()
+  const [showPopover, setShowPopover] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
 
   const handleTransfer = async () => {
+    setButtonIsDisabled(true)
     try {
-      const data: SendToMotherAccountRequest = {
-        amount: parseFloat(inputTransferValue),
-        debitParty: {
-          account: user.account[0].account,
-        },
-        creditParty: {
-          account: user.account[0].account,
-        },
-        description: 'Teste de transferencia',
+      if (user && client) {
+        const data: SendToMotherAccountRequest = {
+          amount: parseFloat(inputTransferValue),
+          debitParty: {
+            account: user?.account[0].account,
+          },
+          creditParty: {
+            account: client?.account[0].account,
+          },
+          description: inputPixDescription,
+        }
+
+        if (isClient) {
+          const response = await AccountService.sendToMotherAccount(
+            user.id,
+            data,
+          )
+
+          console.log(response)
+        } else {
+          const response = await AccountService.transferBetweenAccounts(data)
+
+          console.log(response)
+        }
       }
 
-      if (isClient) {
-        const response = await AccountService.sendToMotherAccount(user.id, data)
-
-        console.log(response)
+      showToast('Transferência realizada com sucesso!', 'success')
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
       } else {
-        const response = await AccountService.transferBetweenAccounts(data)
-
-        console.log(response)
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
       }
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
-        'error',
-      )
     }
+    setInputTransferValue('')
+    setInputPixDescription('')
+    setInputDocumentNumber('')
+    setButtonIsDisabled(false)
+    setShowPopover(false)
   }
 
   const searchByCpf = async () => {
+    setLoading(true)
     try {
       const response =
         await ClientService.getByDocumentNumber(inputDocumentNumber)
 
       setClient(response)
-      console.log(response)
+      setShowPopover(true)
     } catch (error) {
       console.error('Erro ao realizar a requisição:', error)
       showToast(
@@ -71,6 +92,7 @@ const InternalTransfer = ({ isClient, user }: InternalTransferProps) => {
         'error',
       )
     }
+    setLoading(false)
   }
 
   return (
@@ -87,15 +109,22 @@ const InternalTransfer = ({ isClient, user }: InternalTransferProps) => {
           onChange={(e) => setInputDocumentNumber(e.target.value)}
         />
 
-        <Popover>
-          <PopoverTrigger>
-            <Button
-              title="Buscar"
-              w={{ base: 40, md: '32' }}
-              isDisabled={inputDocumentNumber.trim() === ''}
-              onClick={searchByCpf}
-            />
-          </PopoverTrigger>
+        {loading ? (
+          <Spinner
+            size={'lg'}
+            color="black"
+            mx={{ base: 2, md: 0 }}
+            mt={{ base: 3, md: 0 }}
+          />
+        ) : (
+          <Button
+            title="Buscar"
+            w={{ base: 40, md: '32' }}
+            isDisabled={inputDocumentNumber.trim() === ''}
+            onClick={searchByCpf}
+          />
+        )}
+        <Popover isOpen={showPopover} onClose={() => setShowPopover(false)}>
           <Portal>
             <PopoverContent
               w={{ base: '96', md: '96' }}
@@ -103,7 +132,6 @@ const InternalTransfer = ({ isClient, user }: InternalTransferProps) => {
               justifyContent={'center'}
               alignItems={'center'}
             >
-              <Text textAlign={'center'}>Saldo: R$8,999,89</Text>
               <Text textAlign={'center'} fontWeight="bold" color="black">
                 Enviando para {client?.name}
               </Text>
@@ -122,8 +150,26 @@ const InternalTransfer = ({ isClient, user }: InternalTransferProps) => {
                   value={inputTransferValue || ''}
                   onChange={(e) => setInputTransferValue(e.target.value)}
                 />
-                <Button title="Concluir" w="16" onClick={handleTransfer} />
               </HStack>
+              <HStack>
+                <Text fontWeight="bold" color="black" textAlign={'center'}>
+                  Descrição
+                </Text>
+                <Input
+                  placeholder=""
+                  h="10"
+                  w={{ base: 'full', md: 52 }}
+                  value={inputPixDescription}
+                  onChange={(e) => setInputPixDescription(e.target.value)}
+                />
+              </HStack>
+
+              <Button
+                title="Concluir"
+                w="16"
+                onClick={handleTransfer}
+                isDisabled={buttonIsDisabled}
+              />
             </PopoverContent>
           </Portal>
         </Popover>

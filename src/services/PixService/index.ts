@@ -115,7 +115,7 @@ const consultQrCodeEmv = async (
 ): Promise<ConsultQrCodeEmvResponse> => {
   try {
     const response = await api.get(
-      `/pix/consult-qrcode-emv?account=${data.account}&key=${data.emv}`,
+      `/pix/consult-qrcode-emv?account=${data.account}&emv=${data.emv}`,
     )
     return response.data
   } catch (error) {

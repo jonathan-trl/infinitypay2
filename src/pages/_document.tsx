@@ -1,4 +1,6 @@
+import { Input } from '@chakra-ui/react'
 import { Html, Head, Main, NextScript } from 'next/document'
+import ReactInputMask from 'react-input-mask'
 
 export default function Document() {
   return (
@@ -23,6 +25,7 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
+        <Input as={ReactInputMask} />
 
         <div id="little-content"></div>
       </body>

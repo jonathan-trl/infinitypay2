@@ -3,7 +3,7 @@ import AccountService from '@/src/services/AccountService'
 import AdminAffiliateService from '@/src/services/AdminAffiliateService'
 import ClientService from '@/src/services/ClientService'
 import { GetAccountExtractRequestParams } from '@/src/types/Account/Request'
-import { GetAccountExtractResponse } from '@/src/types/Account/Response'
+import { AccountExtractMovements } from '@/src/types/Account/Response'
 import { IClient } from '@/src/types/Client'
 import { formatDate } from '@/src/utils/formatDate'
 import {
@@ -33,7 +33,7 @@ interface SettingsProps {
 
 function Settings({ isClient, userId }: SettingsProps) {
   const [user, setUser] = useState<IClient>()
-  const [extract, setExtract] = useState<GetAccountExtractResponse>()
+  const [extract, setExtract] = useState<AccountExtractMovements[]>([])
   const { showToast } = useCustomToast()
 
   const fetchExtract = async () => {
@@ -46,7 +46,7 @@ function Settings({ isClient, userId }: SettingsProps) {
 
         const newExtract = await AccountService.getAccountExtract(params)
 
-        setExtract(newExtract)
+        setExtract(newExtract.body.movements)
       }
     } catch (error) {
       console.error('Erro ao realizar a requisição:', error)
@@ -146,7 +146,7 @@ function Settings({ isClient, userId }: SettingsProps) {
           </Thead>
           <Tbody>
             {extract &&
-              extract.body.movements.map((movement) => (
+              extract.map((movement) => (
                 <Tr key={movement.id}>
                   <Td fontWeight={'bold'}>{movement.name}</Td>
                   <Td fontWeight={'bold'}>{formatDate(movement.createDate)}</Td>
@@ -172,9 +172,7 @@ function Settings({ isClient, userId }: SettingsProps) {
           </Tbody>
         </Table>
 
-        {extract?.body.movements.length === 0 && (
-          <Text>Nenhum item encontrado!</Text>
-        )}
+        {extract.length === 0 && <Text>Nenhum item encontrado!</Text>}
       </TableContainer>
     </Box>
   )

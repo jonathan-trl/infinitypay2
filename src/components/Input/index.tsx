@@ -1,21 +1,20 @@
 import {
   Box,
-  Text,
   Input as ChakraInput,
-  InputProps,
   FormControl,
-  FormErrorMessage,
+  InputProps,
+  Text,
 } from '@chakra-ui/react'
-import { Form } from 'react-hook-form'
-import { INVALID } from 'zod'
 type Props = InputProps & {
   title?: string
   errorMessage?: string | null
+  mask?: string
 }
 export function Input({
   title,
   errorMessage = null,
   isInvalid,
+  mask,
   ...rest
 }: Props) {
   const Invalid = !!errorMessage || isInvalid

@@ -29,7 +29,9 @@ const QRCodeWithdrawal = ({ user }: QRCodeWithdrawalProps) => {
   const [showPopover, setShowPopover] = useState(false)
   const [qrCodeResult, setQrCodeResult] = useState<ConsultQrCodeEmvResponse>()
   const [inputQrCode, setInputQrCode] = useState('')
+  const [inputPixDescription, setInputPixDescription] = useState('')
   const { showToast } = useCustomToast()
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(false)
 
   const handleConsultQRCodeEmv = async () => {
     setLoading(true)
@@ -42,7 +44,6 @@ const QRCodeWithdrawal = ({ user }: QRCodeWithdrawalProps) => {
       const response = await PixService.consultQrCodeEmv(data)
 
       setQrCodeResult(response)
-      console.log(response)
       setShowPopover(true)
     } catch (error) {
       console.error('Erro ao realizar a requisição:', error)
@@ -55,25 +56,37 @@ const QRCodeWithdrawal = ({ user }: QRCodeWithdrawalProps) => {
   }
 
   const handlePixQrCodeTransfer = async () => {
+    setButtonIsDisabled(true)
     try {
       if (qrCodeResult) {
         const data: PixQrCodeTransferRequest = {
           account: qrCodeResult.creditPart.account.account,
-          emv: qrCodeResult.merchantAccountInformation.key,
-          description: qrCodeResult.transactionIdentification,
+          emv: inputQrCode,
+          description:
+            inputPixDescription || qrCodeResult.transactionIdentification,
         }
 
         const response = await PixService.pixQrCodeTransfer(data)
 
         console.log(response)
       }
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
-        'error',
-      )
+
+      showToast('Transferência realizada com sucesso!', 'success')
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
+    setInputPixDescription('')
+    setInputQrCode('')
+    setShowPopover(false)
+    setButtonIsDisabled(false)
+    setInputQrCode('')
   }
 
   return (
@@ -101,6 +114,7 @@ const QRCodeWithdrawal = ({ user }: QRCodeWithdrawalProps) => {
               w={{ base: 40, md: '32' }}
               mt={{ base: 4, md: 6 }}
               onClick={handleConsultQRCodeEmv}
+              isDisabled={buttonIsDisabled}
             />
           )}
         </PopoverTrigger>
@@ -127,18 +141,26 @@ const QRCodeWithdrawal = ({ user }: QRCodeWithdrawalProps) => {
               textAlign={'center'}
               mt={2}
             >
-              R${' '}
               {qrCodeResult?.transactionAmount.toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
               })}
             </Text>
+            <Input
+              title="Descrição"
+              placeholder=""
+              h="12"
+              w={{ base: 'full', md: 52 }}
+              value={inputPixDescription}
+              onChange={(e) => setInputPixDescription(e.target.value)}
+            />
             <Center>
               <Button
                 title="PAGAR"
                 w="16"
                 mt={2}
                 onClick={handlePixQrCodeTransfer}
+                isDisabled={buttonIsDisabled}
               />
             </Center>
           </PopoverContent>

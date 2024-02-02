@@ -10,6 +10,7 @@ import { Box, FormControl, HStack, Select, Text } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from 'next/router'
 import { Controller, useForm } from 'react-hook-form'
+import ReactInputMask from 'react-input-mask'
 import * as yup from 'yup'
 
 function CreateNewAccount() {
@@ -46,12 +47,26 @@ function CreateNewAccount() {
     clearErrors,
   } = useForm<CreateClientRequest>({
     resolver: yupResolver(newAccountSchema),
+    defaultValues: {
+      socialName: '',
+      complement: '',
+      politicallyExposedPerson: true,
+    },
   })
 
   async function handleNewAccount(data: CreateClientRequest) {
-    console.log(data)
-    const response = await ClientService.create(data)
-    console.log(response)
+    try {
+      console.log(data)
+      const response = await ClientService.create(data)
+      console.log(response)
+      showToast('Conta criada com sucesso!', 'success')
+    } catch (error) {
+      console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao tentar criar a conta, tente novamente mais tarde!',
+        'error',
+      )
+    }
   }
 
   const handleConsultCpf = async () => {
@@ -101,6 +116,7 @@ function CreateNewAccount() {
       setValue('street', response.logradouro)
       setValue('state', response.uf)
       setValue('neighborhood', response.bairro)
+      clearErrors(['neighborhood', 'city', 'street', 'state', 'neighborhood'])
     } catch (error) {
       console.error('Erro ao realizar a requisição:', error)
       showToast(
@@ -179,12 +195,18 @@ function CreateNewAccount() {
               control={control}
               name="phone"
               render={({ field: { onChange, value } }) => (
-                <Input
-                  title="Telefone*"
-                  value={value || ''}
-                  errorMessage={errors.phone?.message}
-                  onChange={onChange}
-                />
+                <>
+                  <Input
+                    as={ReactInputMask}
+                    title="Telefone*"
+                    value={value || ''}
+                    errorMessage={errors.phone?.message}
+                    onChange={onChange}
+                    mask="+55 (99) 99999-9999"
+                    placeholder="+55 (12) 99131-3223"
+                    id="telefone"
+                  />
+                </>
               )}
             />
           </HStack>
@@ -273,10 +295,14 @@ function CreateNewAccount() {
                     borderWidth={2}
                     w="full"
                     onChange={(e) => onChange(e.target.value)}
+                    defaultValue={1}
                   >
                     <option value={1}>Sim</option>
                     <option value={0}>Não</option>
                   </Select>
+                  {errors.politicallyExposedPerson
+                    ? errors.politicallyExposedPerson?.message
+                    : ''}
                 </FormControl>
               )}
             />
@@ -290,7 +316,7 @@ function CreateNewAccount() {
                 <Input
                   title="CEP*"
                   value={value || ''}
-                  errorMessage={errors.politicallyExposedPerson?.message}
+                  errorMessage={errors.cep?.message}
                   onChange={onChange}
                 />
               )}

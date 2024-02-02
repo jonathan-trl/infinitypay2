@@ -22,13 +22,14 @@ import { Info } from '@phosphor-icons/react'
 import { useEffect, useState } from 'react'
 
 function CashOut() {
-  const [user, setUser] = useState<IClient>()
   const [cashOutMoviments, setCashOutMoviments] = useState<
     AccountExtractMovements[]
   >([])
   const { showToast } = useCustomToast()
 
   const fetchExtract = async () => {
+    const userAccount = localStorage.getItem('_u_account')
+    const user: IClient = JSON.parse(userAccount!)
     try {
       if (user) {
         const params: GetAccountExtractRequestParams = {
@@ -45,7 +46,6 @@ function CashOut() {
             (movement) => movement.balanceType === 'DEBIT',
           )
 
-          // Atualizar o estado com os movimentos filtrados
           setCashOutMoviments(filteredCashOutMoviments)
         }
       }
@@ -60,9 +60,8 @@ function CashOut() {
 
   useEffect(() => {
     const userAccount = localStorage.getItem('_u_account')
-    setUser(JSON.parse(userAccount!))
 
-    if (user) {
+    if (userAccount) {
       fetchExtract()
     }
   }, [])
