@@ -34,6 +34,8 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
   const [inputAmount, setInputAmount] = useState('')
   const [loading, setLoading] = useState(false)
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
+
+  const [showSpinnerLoading, setShowSpinnerLoading] = useState(false)
   const { showToast } = useCustomToast()
 
   const handleCheckIsClient = () => {
@@ -45,6 +47,7 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
   }
 
   const handleCreatePixKey = async (keyType: KeyTypeProps) => {
+    setShowSpinnerLoading(true)
     try {
       if (user) {
         const data: CreatePixKeyRequest = {
@@ -76,11 +79,13 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
       )
       onClose()
     }
+    setShowSpinnerLoading(false)
     setInputAmount('')
     onClose()
   }
 
   const handleDeletePixKey = async () => {
+    setShowSpinnerLoading(true)
     try {
       if (
         user &&
@@ -101,6 +106,7 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
         'error',
       )
     }
+    setShowSpinnerLoading(false)
   }
 
   return (
@@ -126,6 +132,8 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
             <Text color="red" m={10} fontWeight="bold">
               Desativado
             </Text>
+
+            {showSpinnerLoading && <Spinner />}
 
             <Button
               title="ATIVAR (chave pix CPF)"
