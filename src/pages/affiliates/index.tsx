@@ -1,5 +1,6 @@
 import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { Input } from '@/src/components/Input'
+import useCustomToast from '@/src/hooks/useCustomToast'
 
 import AdminAffiliateService from '@/src/services/AdminAffiliateService'
 import { GetAffiliatesListResponse } from '@/src/types/AdminAffiliate/Response'
@@ -20,14 +21,18 @@ import { useEffect, useState } from 'react'
 
 function Affiliates() {
   const [affiliates, setAffiliates] = useState<GetAffiliatesListResponse[]>([])
+  const { showToast } = useCustomToast()
 
   const fetchAffiliates = async () => {
     try {
       const newAffiliates = await AdminAffiliateService.getAffiliatesList()
       setAffiliates(newAffiliates)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 

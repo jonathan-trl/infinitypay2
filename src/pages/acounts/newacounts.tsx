@@ -1,6 +1,7 @@
 import { Button } from '@/src/components/Button'
 import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { Input } from '@/src/components/Input'
+import useCustomToast from '@/src/hooks/useCustomToast'
 import ClientService from '@/src/services/ClientService'
 import ConsultService from '@/src/services/ConsultService'
 import { CreateClientRequest } from '@/src/types/Client/Request'
@@ -13,6 +14,7 @@ import * as yup from 'yup'
 
 function NewAcounts() {
   const router = useRouter()
+  const { showToast } = useCustomToast()
 
   const newAccountSchema = yup.object({
     documentNumber: yup.string().required('Informe o CPF'),
@@ -20,7 +22,7 @@ function NewAcounts() {
     phone: yup.string().required('Informe o Telefone'),
     email: yup.string().required('Informe o Email'),
     motherName: yup.string().required('Informe o nome da mãe'),
-    socialName: yup.string().required('Informe o nome social'),
+    socialName: yup.string(),
     birthDate: yup.string().required('Informe a data de nascimento'),
     politicallyExposedPerson: yup
       .boolean()
@@ -28,7 +30,7 @@ function NewAcounts() {
     cep: yup.string().required('Informe o CEP'),
     street: yup.string().required('Informe a Rua'),
     number: yup.string().required('Informe o Número'),
-    complement: yup.string().required('Informe o Complemento'),
+    complement: yup.string(),
     neighborhood: yup.string().required('Informe o Bairro'),
     city: yup.string().required('Informe a Cidade'),
     state: yup.string().required('Informe o Estado'),
@@ -82,8 +84,11 @@ function NewAcounts() {
 
       console.log(response)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 
@@ -97,8 +102,11 @@ function NewAcounts() {
       setValue('state', response.uf)
       setValue('neighborhood', response.bairro)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 
@@ -237,10 +245,12 @@ function NewAcounts() {
                   errorMessage={errors.birthDate?.message}
                   onChange={onChange}
                   onBlur={(e) => {
-                    const formattedDate = new Date(e.target.value)
-                      .toISOString()
-                      .split('T')[0]
-                    onChange(formattedDate)
+                    if (e.target.value !== '') {
+                      const formattedDate = new Date(e.target.value)
+                        .toISOString()
+                        .split('T')[0]
+                      onChange(formattedDate)
+                    }
                   }}
                 />
               )}

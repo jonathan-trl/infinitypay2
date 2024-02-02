@@ -3,6 +3,7 @@ import { Card } from '@/src/components/Card'
 import { InputLogin } from '@/src/components/InputLogin'
 
 import Logo from '@/src/assets/images/Logo.png'
+import useCustomToast from '@/src/hooks/useCustomToast'
 import AuthService from '@/src/services/AuthService'
 import { ForgotPasswordRequest } from '@/src/types/Auth/Request'
 import { Box, Center, Text, VStack } from '@chakra-ui/react'
@@ -11,6 +12,7 @@ import { useState } from 'react'
 
 function ForgotPassword() {
   const [username, setUsername] = useState('')
+  const { showToast } = useCustomToast()
 
   const handleForgotPassword = async () => {
     try {
@@ -22,8 +24,11 @@ function ForgotPassword() {
 
       console.log(response)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 

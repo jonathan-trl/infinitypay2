@@ -1,5 +1,6 @@
 import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { Input } from '@/src/components/Input'
+import useCustomToast from '@/src/hooks/useCustomToast'
 import AccountService from '@/src/services/AccountService'
 import { GetAccountExtractRequestParams } from '@/src/types/Account/Request'
 import { AccountExtractMovements } from '@/src/types/Account/Response'
@@ -25,6 +26,7 @@ function CashOut() {
   const [cashOutMoviments, setCashOutMoviments] = useState<
     AccountExtractMovements[]
   >([])
+  const { showToast } = useCustomToast()
 
   const fetchExtract = async () => {
     try {
@@ -48,8 +50,11 @@ function CashOut() {
         }
       }
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 

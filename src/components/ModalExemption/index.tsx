@@ -1,3 +1,4 @@
+import useCustomToast from '@/src/hooks/useCustomToast'
 import ExemptionService from '@/src/services/ExemptionService'
 import { CreateExemptionRequest } from '@/src/types/Exception/Request'
 import {
@@ -27,6 +28,7 @@ const ModalExemption = ({ isOpen, onClose }: ModalExemptionProps) => {
   const [name, setName] = useState('')
   const [account, setAccount] = useState('')
   const [service, setService] = useState('')
+  const { showToast } = useCustomToast()
 
   const resetStates = () => {
     setLogin('')
@@ -52,13 +54,16 @@ const ModalExemption = ({ isOpen, onClose }: ModalExemptionProps) => {
 
       if (response) {
         resetStates()
-        alert('Insenção solicitada com sucesso!')
+        // 'Insenção solicitada com sucesso!')
         onClose()
       }
       console.log(response)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
       onClose()
     }
   }

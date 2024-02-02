@@ -1,5 +1,6 @@
 import { Button } from '@/src/components/Button'
 import { Input } from '@/src/components/Input'
+import useCustomToast from '@/src/hooks/useCustomToast'
 import PixService from '@/src/services/PixService'
 import { IClient } from '@/src/types/Client'
 import {
@@ -29,6 +30,7 @@ const PixKeyWithdrawal = ({ user }: PixKeyWithdrawalProps) => {
   const [pixKeyResult, setPixKeyResult] = useState<ConsultPixKeyResponse>()
   const [inputPixKey, setInputPixKey] = useState('')
   const [inputPixValue, setInputPixValue] = useState('')
+  const { showToast } = useCustomToast()
 
   const handleConsultPixKey = async () => {
     try {
@@ -43,8 +45,11 @@ const PixKeyWithdrawal = ({ user }: PixKeyWithdrawalProps) => {
       setPixKeyResult(response)
       // setShowPopover(true)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
     setShowPopover(true)
   }
@@ -64,8 +69,11 @@ const PixKeyWithdrawal = ({ user }: PixKeyWithdrawalProps) => {
         console.log(response)
       }
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 

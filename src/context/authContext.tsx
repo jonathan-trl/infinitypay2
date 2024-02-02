@@ -63,7 +63,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }, 5000)
         console.error('Erro ao realizar a requisição:', error)
       } else {
-        alert('Houve um erro ao realizar a requisição')
         console.error('Erro ao realizar a requisição:', error)
       }
     }

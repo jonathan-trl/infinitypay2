@@ -1,18 +1,27 @@
 import { useState } from 'react'
 import AccountService from '../services/AccountService'
 import { GetAccountBalanceResponse } from '../types/Account/Response'
+import useCustomToast from './useCustomToast'
 
 const useBalance = () => {
   const [balance, setBalance] = useState<GetAccountBalanceResponse | null>()
+  const { showToast } = useCustomToast()
 
   const updateBalance = async (id?: string) => {
     const loggedId = localStorage.getItem('_uid')
 
     if (id || loggedId) {
-      setBalance(null)
-      console.log('id loggedid', id, loggedId)
-      const response = await AccountService.getAccountBalance(id || loggedId!)
-      setBalance(response)
+      try {
+        setBalance(null)
+        const response = await AccountService.getAccountBalance(id || loggedId!)
+        setBalance(response)
+      } catch (error) {
+        console.error('Erro ao realizar a requisição:', error)
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
   }
 

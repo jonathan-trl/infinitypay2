@@ -1,5 +1,6 @@
 import { Button } from '@/src/components/Button'
 import { Input } from '@/src/components/Input'
+import useCustomToast from '@/src/hooks/useCustomToast'
 import PixService from '@/src/services/PixService'
 import { IClient } from '@/src/types/Client'
 import { CreatePixKeyRequest, KeyTypeProps } from '@/src/types/Pix/Request'
@@ -20,7 +21,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { CheckCircle } from '@phosphor-icons/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 interface SituationProps {
   isClient: boolean
@@ -29,10 +30,11 @@ interface SituationProps {
 }
 
 const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
-  const [paymentCompleted, setPaymentCompleted] = useState(true)
+  const [paymentCompleted, setPaymentCompleted] = useState(false)
   const [inputAmount, setInputAmount] = useState('')
   const [loading, setLoading] = useState(false)
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure()
+  const { showToast } = useCustomToast()
 
   const handleCheckIsClient = () => {
     if (isClient) {
@@ -53,6 +55,9 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
         }
 
         if (keyType !== 'EVP') {
+          if (isClient && inputAmount === '') {
+            return false
+          }
           data.value = parseFloat(inputAmount)
           data.key = user.documentNumber
           data.keyType = keyType
@@ -64,9 +69,15 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
         fetchUser()
       }
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao cadastrar a chave pix por CPF, tente novamente mais tarde!',
+        'error',
+      )
+      onClose()
     }
+    setInputAmount('')
+    onClose()
   }
 
   const handleDeletePixKey = async () => {
@@ -84,20 +95,13 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
         fetchUser()
       }
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
-
-  useEffect(() => {
-    if (paymentCompleted) {
-      const timer = setTimeout(() => {
-        setPaymentCompleted(false)
-      }, 3000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [paymentCompleted])
 
   return (
     <VStack align="start" spacing={4} w="100%">

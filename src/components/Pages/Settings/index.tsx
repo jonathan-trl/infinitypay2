@@ -1,3 +1,4 @@
+import useCustomToast from '@/src/hooks/useCustomToast'
 import AccountService from '@/src/services/AccountService'
 import AdminAffiliateService from '@/src/services/AdminAffiliateService'
 import ClientService from '@/src/services/ClientService'
@@ -33,6 +34,7 @@ interface SettingsProps {
 function Settings({ isClient, userId }: SettingsProps) {
   const [user, setUser] = useState<IClient>()
   const [extract, setExtract] = useState<GetAccountExtractResponse>()
+  const { showToast } = useCustomToast()
 
   const fetchExtract = async () => {
     try {
@@ -47,8 +49,11 @@ function Settings({ isClient, userId }: SettingsProps) {
         setExtract(newExtract)
       }
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 
@@ -69,8 +74,11 @@ function Settings({ isClient, userId }: SettingsProps) {
       setUser(user)
       return user
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 
@@ -82,8 +90,11 @@ function Settings({ isClient, userId }: SettingsProps) {
 
       return user
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 

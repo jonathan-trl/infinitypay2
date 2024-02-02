@@ -1,5 +1,6 @@
 import { Button } from '@/src/components/Button'
 import { Input } from '@/src/components/Input'
+import useCustomToast from '@/src/hooks/useCustomToast'
 import PixService from '@/src/services/PixService'
 import { IClient } from '@/src/types/Client'
 import {
@@ -28,6 +29,7 @@ const QRCodeWithdrawal = ({ user }: QRCodeWithdrawalProps) => {
   const [showPopover, setShowPopover] = useState(false)
   const [qrCodeResult, setQrCodeResult] = useState<ConsultQrCodeEmvResponse>()
   const [inputQrCode, setInputQrCode] = useState('')
+  const { showToast } = useCustomToast()
 
   const handleConsultQRCodeEmv = async () => {
     setLoading(true)
@@ -43,8 +45,11 @@ const QRCodeWithdrawal = ({ user }: QRCodeWithdrawalProps) => {
       console.log(response)
       setShowPopover(true)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
     setLoading(false)
   }
@@ -63,8 +68,11 @@ const QRCodeWithdrawal = ({ user }: QRCodeWithdrawalProps) => {
         console.log(response)
       }
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 

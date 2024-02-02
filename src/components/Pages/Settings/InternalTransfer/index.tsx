@@ -1,5 +1,6 @@
 import { Button } from '@/src/components/Button'
 import { Input } from '@/src/components/Input'
+import useCustomToast from '@/src/hooks/useCustomToast'
 import AccountService from '@/src/services/AccountService'
 import ClientService from '@/src/services/ClientService'
 import { SendToMotherAccountRequest } from '@/src/types/Account/Request'
@@ -23,6 +24,7 @@ const InternalTransfer = ({ isClient, user }: InternalTransferProps) => {
   const [inputDocumentNumber, setInputDocumentNumber] = useState('')
   const [inputTransferValue, setInputTransferValue] = useState('0')
   const [client, setClient] = useState<IClient>()
+  const { showToast } = useCustomToast()
 
   const handleTransfer = async () => {
     try {
@@ -47,8 +49,11 @@ const InternalTransfer = ({ isClient, user }: InternalTransferProps) => {
         console.log(response)
       }
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 
@@ -60,8 +65,11 @@ const InternalTransfer = ({ isClient, user }: InternalTransferProps) => {
       setClient(response)
       console.log(response)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 

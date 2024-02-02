@@ -1,6 +1,7 @@
 import { ButtonSearch } from '@/src/components/ButtonSearch'
 import { ButtonStatus } from '@/src/components/ButtonStatus'
 import { Input } from '@/src/components/Input'
+import useCustomToast from '@/src/hooks/useCustomToast'
 import ExemptionService from '@/src/services/ExemptionService'
 import { ExemptionResponse } from '@/src/types/Exception/Response'
 import { formatDate } from '@/src/utils/formatDate'
@@ -20,14 +21,18 @@ import { useEffect, useState } from 'react'
 
 function Exemption() {
   const [exemptions, setExemptions] = useState<ExemptionResponse[]>([])
+  const { showToast } = useCustomToast()
 
   const fetchExemptions = async () => {
     try {
       const newExemptions = await ExemptionService.listExemptions()
       setExemptions(newExemptions)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 

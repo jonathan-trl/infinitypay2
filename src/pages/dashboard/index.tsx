@@ -1,5 +1,5 @@
+import useCustomToast from '@/src/hooks/useCustomToast'
 import AccountService from '@/src/services/AccountService'
-import AdminAffiliateService from '@/src/services/AdminAffiliateService'
 import ClientService from '@/src/services/ClientService'
 import ConsultService from '@/src/services/ConsultService'
 import { TransactionsInformatioResponse } from '@/src/types/Account/Response'
@@ -14,14 +14,18 @@ function DashBoard() {
   const [totalConsults, setTotalConsults] = useState<ConsultCountResponse>()
   const [transactionInformation, setTransactionInformation] =
     useState<TransactionsInformatioResponse>()
+  const { showToast } = useCustomToast()
 
   const fetchTotalAccounts = async () => {
     try {
       const response = await ClientService.countNewClients()
       setTotalAccounts(response)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 
@@ -30,8 +34,11 @@ function DashBoard() {
       const response = await ConsultService.consultCount()
       setTotalConsults(response)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 
@@ -44,8 +51,11 @@ function DashBoard() {
       )
       setTransactionInformation(response)
     } catch (error) {
-      alert('Houve um erro ao realizar a requisição')
       console.error('Erro ao realizar a requisição:', error)
+      showToast(
+        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+        'error',
+      )
     }
   }
 

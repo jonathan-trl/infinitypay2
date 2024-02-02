@@ -1,9 +1,10 @@
 // pages/_app.js
 import { ChakraProvider } from '@chakra-ui/react'
-import { AuthProvider, useAuth } from '../context/authContext'
-import { useRouter } from 'next/router'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Header from '../components/Header'
 import NavBar from '../components/NavBar/NavBar'
+import { AuthProvider } from '../context/authContext'
 
 function MyApp({ Component, pageProps }: any) {
   return (
@@ -11,6 +12,7 @@ function MyApp({ Component, pageProps }: any) {
       <AuthProvider>
         <Header />
         <NavBar />
+        <ToastContainer style={{ width: '700px' }} />
         <Component {...pageProps} />
       </AuthProvider>
     </ChakraProvider>
