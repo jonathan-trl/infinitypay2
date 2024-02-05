@@ -71,12 +71,15 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
 
         fetchUser()
       }
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao cadastrar a chave pix por CPF, tipo de chave não permitido!',
-        'error',
-      )
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
       onClose()
     }
     setShowSpinnerLoading(false)
@@ -99,12 +102,15 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
 
         fetchUser()
       }
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
-        'error',
-      )
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
     setShowSpinnerLoading(false)
   }

@@ -7,15 +7,15 @@ import ClientService from '@/src/services/ClientService'
 import { ListAllClientsParamsRequest } from '@/src/types/Client/Request'
 import { ClientResponse } from '@/src/types/Client/Response'
 import {
-  Box,
-  Flex,
-  Spinner,
-  Table,
-  TableContainer,
-  Text,
-  Th,
-  Thead,
-  Tr,
+    Box,
+    Flex,
+    Spinner,
+    Table,
+    TableContainer,
+    Text,
+    Th,
+    Thead,
+    Tr,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -40,12 +40,15 @@ function Acounts() {
       }
       const newClients = await ClientService.listAll(params)
       setClients(newClients)
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
-        'error',
-      )
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
     setShowSpinnerLoading(false)
   }

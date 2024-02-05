@@ -60,12 +60,15 @@ function CreateNewAccount() {
       const response = await ClientService.create(data)
       console.log(response)
       showToast('Conta criada com sucesso!', 'success')
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao tentar criar a conta, tente novamente mais tarde!',
-        'error',
-      )
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
   }
 
@@ -98,12 +101,15 @@ function CreateNewAccount() {
       const response = await ConsultService.consultCpf(cpf, birthDate)
 
       console.log(response)
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
-        'error',
-      )
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
   }
 
@@ -117,12 +123,15 @@ function CreateNewAccount() {
       setValue('state', response.uf)
       setValue('neighborhood', response.bairro)
       clearErrors(['neighborhood', 'city', 'street', 'state', 'neighborhood'])
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
-        'error',
-      )
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
   }
 

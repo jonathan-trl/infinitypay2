@@ -27,12 +27,15 @@ function Affiliates() {
     try {
       const newAffiliates = await AdminAffiliateService.getAffiliatesList()
       setAffiliates(newAffiliates)
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
-        'error',
-      )
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
   }
 

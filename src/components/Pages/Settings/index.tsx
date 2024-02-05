@@ -48,12 +48,15 @@ function Settings({ isClient, userId }: SettingsProps) {
 
         setExtract(newExtract.body.movements)
       }
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
-        'error',
-      )
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
   }
 
@@ -73,12 +76,15 @@ function Settings({ isClient, userId }: SettingsProps) {
       localStorage.setItem('_u_account', JSON.stringify(user))
       setUser(user)
       return user
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
-        'error',
-      )
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
   }
 
@@ -89,12 +95,15 @@ function Settings({ isClient, userId }: SettingsProps) {
       setUser(user)
 
       return user
-    } catch (error) {
-      console.error('Erro ao realizar a requisição:', error)
-      showToast(
-        'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
-        'error',
-      )
+    } catch (error: any) {
+      if (error.response.status === 400 && error.response.data?.error) {
+        showToast(error.response.data.error, 'error')
+      } else {
+        showToast(
+          'Houve um erro ao realizar a requisição, tente novamente mais tarde!',
+          'error',
+        )
+      }
     }
   }
 
