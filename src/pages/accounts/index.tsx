@@ -7,15 +7,15 @@ import ClientService from '@/src/services/ClientService'
 import { ListAllClientsParamsRequest } from '@/src/types/Client/Request'
 import { ClientResponse } from '@/src/types/Client/Response'
 import {
-    Box,
-    Flex,
-    Spinner,
-    Table,
-    TableContainer,
-    Text,
-    Th,
-    Thead,
-    Tr,
+  Box,
+  Flex,
+  Spinner,
+  Table,
+  TableContainer,
+  Text,
+  Th,
+  Thead,
+  Tr,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
