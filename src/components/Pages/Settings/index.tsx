@@ -49,7 +49,11 @@ function Settings({ isClient, userId }: SettingsProps) {
         setExtract(newExtract.body.movements)
       }
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(
@@ -77,7 +81,11 @@ function Settings({ isClient, userId }: SettingsProps) {
       setUser(user)
       return user
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(
@@ -96,7 +104,11 @@ function Settings({ isClient, userId }: SettingsProps) {
 
       return user
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(
@@ -108,9 +120,12 @@ function Settings({ isClient, userId }: SettingsProps) {
   }
 
   useEffect(() => {
-    fetchExtract()
     fetchUser()
   }, [])
+
+  useEffect(() => {
+    fetchExtract()
+  }, [user])
 
   return (
     <Box flex={1} ml={{ base: 0, md: 52 }}>

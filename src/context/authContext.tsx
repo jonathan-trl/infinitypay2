@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('_uid', response.data.id) // uid = usuario id
       setUserAuthenticated(true)
     } catch (error: any) {
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response && error.response.status === 401) {
         setErrorMessage(
           'Credenciais incorretas. Verifique seu nome de usuário e senha.',
         )

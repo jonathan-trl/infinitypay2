@@ -24,7 +24,11 @@ function ForgotPassword() {
 
       console.log(response)
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(

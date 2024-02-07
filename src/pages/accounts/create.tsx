@@ -61,7 +61,11 @@ function CreateNewAccount() {
       console.log(response)
       showToast('Conta criada com sucesso!', 'success')
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(
@@ -102,7 +106,11 @@ function CreateNewAccount() {
 
       console.log(response)
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(
@@ -124,7 +132,11 @@ function CreateNewAccount() {
       setValue('neighborhood', response.bairro)
       clearErrors(['neighborhood', 'city', 'street', 'state', 'neighborhood'])
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(
@@ -204,18 +216,16 @@ function CreateNewAccount() {
               control={control}
               name="phone"
               render={({ field: { onChange, value } }) => (
-                <>
-                  <Input
-                    as={ReactInputMask}
-                    title="Telefone*"
-                    value={value || ''}
-                    errorMessage={errors.phone?.message}
-                    onChange={onChange}
-                    mask="+55 (99) 99999-9999"
-                    placeholder="+55 (12) 99131-3223"
-                    id="telefone"
-                  />
-                </>
+                <Input
+                  as={ReactInputMask}
+                  title="Telefone*"
+                  value={value || ''}
+                  errorMessage={errors.phone?.message}
+                  onChange={onChange}
+                  mask="+55 (99) 99999-9999"
+                  placeholder="+55 (12) 99131-3223"
+                  id="telefone"
+                />
               )}
             />
           </HStack>

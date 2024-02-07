@@ -14,7 +14,6 @@ export function Input({
   title,
   errorMessage = null,
   isInvalid,
-  mask,
   ...rest
 }: Props) {
   const Invalid = !!errorMessage || isInvalid

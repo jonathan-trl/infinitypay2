@@ -72,7 +72,11 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
         fetchUser()
       }
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(
@@ -103,7 +107,11 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
         fetchUser()
       }
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(
@@ -131,7 +139,15 @@ const Situation = ({ isClient, user, fetchUser }: SituationProps) => {
             <Text color="#17c972" m={10} fontWeight="bold">
               Ativado
             </Text>
-            <Button title="DESATIVAR CHAVE PIX" onClick={handleDeletePixKey} />
+
+            {showSpinnerLoading ? (
+              <Spinner />
+            ) : (
+              <Button
+                title="DESATIVAR CHAVE PIX"
+                onClick={handleDeletePixKey}
+              />
+            )}
           </HStack>
         ) : (
           <HStack flexDirection={{ base: 'column', md: 'row' }}>

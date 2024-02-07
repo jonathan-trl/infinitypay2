@@ -46,7 +46,11 @@ const QRCodeWithdrawal = ({ user }: QRCodeWithdrawalProps) => {
       setQrCodeResult(response)
       setShowPopover(true)
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(
@@ -76,7 +80,11 @@ const QRCodeWithdrawal = ({ user }: QRCodeWithdrawalProps) => {
 
       showToast('Transferência realizada com sucesso!', 'success')
     } catch (error: any) {
-      if (error.response.status === 400 && error.response.data?.error) {
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data?.error
+      ) {
         showToast(error.response.data.error, 'error')
       } else {
         showToast(
